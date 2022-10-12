@@ -1,0 +1,256 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 80px;
+  width: 80px;
+  pointer-events: none;
+}
+
+
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.searchForm{
+  position: relative;
+  right: 82%;
+}
+.loginForm{
+  position: absolute;
+  top:30%;
+  left:35%;
+  width: 400px;
+  height: 400px;
+}
+.loginButton{
+  position: absolute;
+  left:30%;
+}
+
+.myModal{
+  position: absolute;
+  left: 30%;
+  top: 13%;
+  width: 40%;
+  height:550px;
+  background-color: gray;
+  z-index: 2;
+  border-radius: 10px;
+}
+.modal-footer{
+  position: absolute;
+  bottom: 0;
+  height: 25%;
+  width: 100%;
+}
+.modal-header{
+  height: 15%;
+  width: 100%;
+  text-align: center;
+}
+.modal-body{
+  width: 100%;
+  height:60%;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  overflow-y: scroll;
+}
+
+.profile-image{
+  height: 50px;
+  width: 50px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+.ml-2{
+  margin-left: 10px;
+}
+.centerContent{
+  position: absolute;
+  left: 36%;
+  font-size: 22px;
+}
+.longBtn{
+  width:60%;
+}
+.centerButton{
+  position: absolute;
+  left:20%;
+  bottom: 5%;
+}
+.postContent{
+  font-size: 25px;
+  height: 60%;
+  width: 95%;
+}
+.addFileBtn{
+  position: absolute;
+  bottom: 10%;
+  left: 20%;
+ 
+}
+.profile-name{
+  position: absolute;
+  top: 5%;
+  left:12%;
+}
+.imgStyle{
+  position: absolute;
+  left:7%;
+}
+.image-container{
+  width: 86%;
+  height: auto;
+}
+.container{
+  vertical-align: top;
+  display: flex;
+}
+.postForm{
+  position: absolute;
+  font-size: 20px;
+  border-radius: 25px;
+  width: 85%;
+  left: 64px;
+  top:15px;
+  height: 50px;
+  background-color:aliceblue;
+  cursor: pointer;
+  
+ 
+}
+.notVisible{
+  display: none;
+}
+.postForm-text{
+  position: absolute;
+  top:15%;
+  left:70px;
+  
+}
+.postForm:hover{
+  background-color: aquamarine;
+}
+.postForm-container{
+  position: relative;
+  left:30%;
+  top:20px;
+  width: 40%;
+  height:150px;
+  background-color: aqua;
+  border-radius: 10px;
+}
+.postForm-image{
+  position: absolute;
+  top:15px;
+  left: 5px;
+  cursor: pointer;
+}
+.onlyImageForm{
+  position: absolute;
+  border-top: 1px solid black;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+}
+.allPosts{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.postContainer-withoutImage{
+  position: relative;
+  left:30%;
+  top:40px;
+  width: 40%;
+  height: 250px;
+  background-color: lightblue;
+  border-radius: 10px;
+}
+.postContainer-post{
+  width: 100%;
+  height: 93%;
+}
+.postContainer-space{
+  background-color: white;
+  height: 7%;
+  width: 100%;
+}
+.postContainer-post-header{
+  width: 100%;
+  height: 15%;
+}
+.postContainer-post-autorName{
+  position: absolute;
+  left:15%;
+  top:3%;
+}
+.postContainer-post-text{
+  position: relative;
+  top: 17%;
+  left: 14px;
+  height: 20%;
+}
+
+.postContainer-withImage{
+  position: relative;
+  left:30%;
+  top:40px;
+  width: 40%;
+  height: 600px;
+  background-color: lightblue;
+  border-radius: 10px;
+}
+.postsList{
+  position: relative;
+  left: 30%;
+  top:60px;
+}
+.postContainer-post-footer{
+  position: absolute;
+  bottom: 0;
+  height: 15%;
+  width: 100%;
+  border-bottom-left-radius: 10px;
+}
+.likeBtn{
+  position: relative;
+  top: 24%;
+  width: 48%;
+  border-radius: 10px;
+  border: none;
+}
+.commentBtn{
+  position: relative;
+  top: 24%;
+  left: 4%;
+  width: 48%;
+  border-radius: 10px;
+  border: none;
+  resize: both;
+}
+
