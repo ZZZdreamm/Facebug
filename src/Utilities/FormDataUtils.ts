@@ -1,4 +1,5 @@
 import { format } from "path";
+import { profileDTO, profileImageCreationDTO } from "../Profile/profiles.models";
 
 
 function formatDate(date:Date){
@@ -23,6 +24,33 @@ export function convertPostToFormData(post:postCreationDTO){
 
     if(post.mediaFile){
         formData.append('mediaFile', post.mediaFile);
+    }
+   
+    return formData;
+}
+
+export function convertCommentToFormData(comment:commentsCreationDTO){
+    const formData = new FormData();
+    formData.append('autorName',comment.autorName);
+    formData.append('textContent',comment.textContent)
+    formData.append('postId',comment.postId.toString())
+
+    if(comment.autorProfileImage){
+        formData.append('autorProfileImage', comment.autorProfileImage);
+    }
+   
+    return formData;
+}
+
+
+export function convertProfileToFormData(profile:profileImageCreationDTO){
+    const formData = new FormData();
+    formData.append('id',profile.id);
+    formData.append('email',profile.email);
+
+
+    if(profile.profileImage){
+        formData.append('profileImage', profile.profileImage);
     }
    
     return formData;

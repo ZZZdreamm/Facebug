@@ -40,6 +40,9 @@ export function getClaims(): claim[]{
 export function logout(){
     localStorage.removeItem(tokenKey);
     localStorage.removeItem(expirationKey);
+    localStorage.removeItem("email");
+    localStorage.removeItem("id");
+    localStorage.removeItem("profileImage");
 }
 
 export function getToken(){

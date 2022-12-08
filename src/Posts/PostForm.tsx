@@ -1,25 +1,29 @@
 import axios from "axios";
 import { Form, Formik } from "formik";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { urlPosts } from "../apiPaths";
 import ImageContainer from "../Forms/ImageContainer";
 import ImageField from "../Forms/ImageField";
+import ProfileContext from "../Profile/ProfileContext";
 import Button from "../Utilities/Button";
 import { convertPostToFormData } from "../Utilities/FormDataUtils";
+import ImageUploader from "../Utilities/ImageUploader";
+import Modal from "../Utilities/Modal";
+import ModalOpenedContext from "../Utilities/ModalOpenedContext";
 import UserImage from "../Utilities/UserImage";
 import PostModal from "./PostModal";
 
 export default function PostForm(props: postFormProps) {
-
   const [disabled, setDisabled] = useState(true);
   const [emptyText, setEmptyText] = useState(true);
   const [text, setText] = useState<string>("");
-  const [visibleModal,setVisibleModal] = useState("none"); 
+  const { profileDTO, updateProfile } = useContext(ProfileContext);
+  const [displayModal, setDisplayModal] = useState(0);
 
-  const { render, imageURL, imageBase64, fileToData } = ImageField({
-    displayName: "",
-    imageURL: "",
-    field: "",
+  const { fileToData, baseImage, ImageUpload } = ImageUploader({
+    textContent: "Add Image",
+    image: ``,
+    onChange() {},
   });
 
   useEffect(() => {
@@ -33,7 +37,7 @@ export default function PostForm(props: postFormProps) {
     } else {
       setDisabled(true);
     }
-  });
+  }, []);
 
   async function submitPost(post: postCreationDTO) {
     try {
@@ -47,84 +51,98 @@ export default function PostForm(props: postFormProps) {
     } catch (error) {}
   }
 
-  function hideModal(){
-    setVisibleModal("none");
-  }
-
-  const showModal= () => {
-    setVisibleModal("block");
+  const showModal = () => {
     setText("");
-  }
+  };
+  // var modalClassName = modalNotOpened ? "closedModal" : "openedModal";
+  // var overlay = modalNotOpened ? "overlay" : "overlayDisplayed";
   return (
     <>
-      <div className="postForm-container">
-      <UserImage profileImage={props.model.autorProfileImage}/>
-        <div id="postForm1" className="postForm" onClick={() =>showModal()}>
-        
-          <h4 className="postForm-text">What do you think about?</h4>
-        </div>
-        <div className="onlyImageForm">
-
-        </div>
-      </div>
-      <div id="on-visible" style={{display:`${visibleModal}`}}>
-      <Formik
-        initialValues={props.model}
-        onSubmit={(values) => {
-          values.textContent = text;
-          values.mediaFile = fileToData;
-          console.log(values);
-          submitPost(values);
-        }}
-      >
-        <Form className="myModal">
+      <Modal
+        body={
+          <Formik
+            initialValues={props.model}
+            onSubmit={(values) => {
+              values.textContent = text;
+              values.mediaFile = fileToData;
+              values.autorProfileImage = profileDTO.profileImage;
+              console.log(values);
+              submitPost(values);
+            }}
+          >
+            <Form className="myModal">
+              <div className="modal-body">
+                <div className="modal-body-autorData">
+                  <img
+                    className="profile-image"
+                    src={props.model.autorProfileImage}
+                    alt="profile"
+                  />
+                  <div className="profile-name">{props.model.autorName}</div>
+                </div>
+                <textarea
+                  value={text}
+                  className="mt-2 ml-2 postContent"
+                  onChange={(e) => setText(e.target.value)}
+                  style={{ resize: "none" }}
+                ></textarea>
+                <div className="mb-3">
+                  <img className="postImage" src={baseImage} />
+                </div>
+              </div>
+              <div className="modal-myfooter">
+                <span className="fileUploader"> {ImageUpload}</span>
+                <Button
+                  className="btn btn-primary publish-button"
+                  type="submit"
+                  onClick={() => setDisplayModal(displayModal - 1)}
+                >
+                  Publish Post
+                </Button>
+              </div>
+            </Form>
+          </Formik>
+        }
+        header={
           <div className="modal-header">
             <span className="centerContent">Create Post</span>
-          </div>
-          <div className="modal-body">
-            <div>
-              <img
-                className="profile-image"
-                src={props.model.autorProfileImage}
-                alt="profile"
-              />
-              <div className="ml-2 profile-name">
-                {props.profileName} {props.profileSurname}
-              </div>
-            </div>
-            <textarea
-             value={text}
-              id="textDiv"
-              className="mt-2 ml-2 postContent"
-              onChange={(e) => setText(e.target.value)}
-            ></textarea>
-
-            <div className="mb-3">
-              <ImageContainer imageBase64={imageBase64} imageURL={imageURL} />
-            </div>
-          </div>
-          <div className="modal-footer">
-            {render}
-            <Button
-              className="btn btn-primary longBtn centerButton"
-              disabled={disabled}
-              type="submit"
-              onClick={() => hideModal()}
+            <span
+              className="closeModal"
+              onClick={() => {
+                setDisplayModal(displayModal - 1)
+              }}
             >
-              Publish Post
-            </Button>
+              X
+            </span>
           </div>
-        </Form>
-      </Formik>
-    </div>
+        }
+        modalDisplayer={
+          <div className="postForm-container">
+            <UserImage profileImage={profileDTO.profileImage} />
+            <div
+              className="postForm"
+              onClick={() => {
+                setDisplayModal(displayModal + 1);
+                showModal();
+              }}
+            >
+              <h4 className="postForm-text">
+                <span className="showYourRequests">
+                  What do you want to post today?
+                </span>
+              </h4>
+            </div>
+          </div>
+        }
+        doDisplay={displayModal}
+        withFooter={false}
+      />
     </>
   );
 }
 
 interface postFormProps {
   model: postCreationDTO;
-  profileName: string;
-  profileSurname: string;
   mediaFile?: string;
   imageURL: string;
 }

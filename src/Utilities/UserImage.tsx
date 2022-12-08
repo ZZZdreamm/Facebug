@@ -1,12 +1,16 @@
+import { useEffect, useState } from "react";
+
 export default function UserImage(props:userImageProps){
     return(
         <img
         className="profile-image postForm-image"
         src={props.profileImage}
-        alt="profile"
       />
     )
 }
 interface userImageProps{
-    profileImage:string;
+    profileImage?:string;
+}
+UserImage.defaultProps = {
+    profileImage:"/noProfile.jpg"
 }

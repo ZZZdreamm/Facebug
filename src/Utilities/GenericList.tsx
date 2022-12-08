@@ -2,16 +2,13 @@ import { ReactElement } from "react";
 import Loading from "./Loading";
 
 export default function GenericList(props:genericListProps){
-    if(!props.list){
-        if (props.loadingUI) {
-            return props.loadingUI;
-        }
-        return <Loading/>
+    if(!props?.list){
+        return <>There are no elements to display</>
     }else if(props.list.length === 0){
         if (props.emptyListUI) {
             return props.emptyListUI;
         }
-        return <>There are no elemnts to display</>
+        return <>There are no elements to display</>
     }
     else{
         return props.children;

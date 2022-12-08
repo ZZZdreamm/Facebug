@@ -11,8 +11,7 @@ export default function Authorized(props:authorizedProps){
               setIsAuthorized(index > -1);
         }else{
             setIsAuthorized(claims.length > 0);
-            console.log(claims);
-            console.log(isAuthorized);
+                    
         }
       
     },[claims,props.role])

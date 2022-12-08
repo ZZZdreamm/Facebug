@@ -1,4 +1,5 @@
 import { useFormikContext } from "formik";
+import React, { useRef } from "react";
 import { ChangeEvent, HtmlHTMLAttributes, useState } from "react";
 import ImageContainer from "./ImageContainer";
 
@@ -8,8 +9,7 @@ export default function ImageField(props: imageFieldProps) {
   const [imageURL,setImageURL] =useState(props.imageURL);
   const [fileToData,setFileToData] = useState<File>();
   // const {values} = useFormikContext<any>();
-  const divStyle = {marginTop:'10px'};
-  const imageStyle = {width:'86%' }
+
 
   const handleOnChange = (eventArgs: ChangeEvent<HTMLInputElement>) => {
     if (eventArgs.currentTarget.files) {
