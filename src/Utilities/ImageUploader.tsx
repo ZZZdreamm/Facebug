@@ -4,8 +4,13 @@ export default function ImageUploader(props: imageUploaderProps) {
   const [fileToData, setFileToData] = useState<File>();
   const [baseImage, setBaseImage] = useState(props.image);
   const [modalDisplay, setModalDisplay] = useState("none");
+
+  const [imageName,setImageName] = useState("")
+
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
+    setImageName(file.name)
+    console.log(imageName)
     const base64: any = await convertBase64(file);
     setBaseImage(base64);
     setFileToData(file);
@@ -34,9 +39,18 @@ export default function ImageUploader(props: imageUploaderProps) {
     setFileToData(undefined);
     setModalDisplay("none");
   }
+  function removeSendingImage(){
+    setBaseImage(undefined)
+    setFileToData(undefined)
+  }
   return {
+    imageName,
     fileToData,
     baseImage,
+    deleteImage: (
+      <span style={{marginLeft:"5px", cursor:"pointer"}}
+             onClick={() => removeSendingImage()}>X</span>
+    ),
     ImageUpload: (
       
         <label className="fileUploader-container">

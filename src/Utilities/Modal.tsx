@@ -7,7 +7,6 @@ export default function Modal(props: modalProps) {
   const { modalNotOpened, updateModalState } = useContext(ModalOpenedContext);
 
   useEffect(() => {
-    console.log(props.doDisplay)
     if (props.doDisplay > 0) {
       showModal();
     } else {

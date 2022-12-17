@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Form, Formik } from "formik";
+import { text } from "node:stream/consumers";
 import { useContext, useEffect, useState } from "react";
 import { urlPosts } from "../apiPaths";
 import ImageContainer from "../Forms/ImageContainer";
@@ -16,7 +17,7 @@ import PostModal from "./PostModal";
 export default function PostForm(props: postFormProps) {
   const [disabled, setDisabled] = useState(true);
   const [emptyText, setEmptyText] = useState(true);
-  const [text, setText] = useState<string>("");
+  // const [text, setText] = useState<string>("");
   const { profileDTO, updateProfile } = useContext(ProfileContext);
   const [displayModal, setDisplayModal] = useState(0);
 
@@ -26,18 +27,18 @@ export default function PostForm(props: postFormProps) {
     onChange() {},
   });
 
-  useEffect(() => {
-    if (text !== "") {
-      setEmptyText(false);
-    } else {
-      setEmptyText(true);
-    }
-    if (emptyText === false) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (text !== "") {
+  //     setEmptyText(false);
+  //   } else {
+  //     setEmptyText(true);
+  //   }
+  //   if (emptyText === false) {
+  //     setDisabled(false);
+  //   } else {
+  //     setDisabled(true);
+  //   }
+  // }, []);
 
   async function submitPost(post: postCreationDTO) {
     try {
@@ -50,12 +51,10 @@ export default function PostForm(props: postFormProps) {
       });
     } catch (error) {}
   }
+  var textDiv = document.getElementById("post-text")
+  const [textEmpty,setTextEmpty] = useState(true)
 
-  const showModal = () => {
-    setText("");
-  };
-  // var modalClassName = modalNotOpened ? "closedModal" : "openedModal";
-  // var overlay = modalNotOpened ? "overlay" : "overlayDisplayed";
+
   return (
     <>
       <Modal
@@ -63,11 +62,14 @@ export default function PostForm(props: postFormProps) {
           <Formik
             initialValues={props.model}
             onSubmit={(values) => {
-              values.textContent = text;
+              
+              const text = textDiv?.textContent
+              values.textContent = text!;
               values.mediaFile = fileToData;
               values.autorProfileImage = profileDTO.profileImage;
               console.log(values);
               submitPost(values);
+              textDiv!.innerHTML = ""
             }}
           >
             <Form className="myModal">
@@ -80,12 +82,9 @@ export default function PostForm(props: postFormProps) {
                   />
                   <div className="profile-name">{props.model.autorName}</div>
                 </div>
-                <textarea
-                  value={text}
-                  className="mt-2 ml-2 postContent"
-                  onChange={(e) => setText(e.target.value)}
-                  style={{ resize: "none" }}
-                ></textarea>
+                <div id="post-text" className="postContent" contentEditable onKeyUp={() => {
+                  setTextEmpty(textDiv?.textContent == "" ? true : false)
+                }}></div>
                 <div className="mb-3">
                   <img className="postImage" src={baseImage} />
                 </div>
@@ -95,7 +94,10 @@ export default function PostForm(props: postFormProps) {
                 <Button
                   className="btn btn-primary publish-button"
                   type="submit"
-                  onClick={() => setDisplayModal(displayModal - 1)}
+                  disabled={textEmpty}
+                  onClick={() => {
+                    setDisplayModal(displayModal - 1)
+                  }}
                 >
                   Publish Post
                 </Button>
@@ -123,7 +125,6 @@ export default function PostForm(props: postFormProps) {
               className="postForm"
               onClick={() => {
                 setDisplayModal(displayModal + 1);
-                showModal();
               }}
             >
               <h4 className="postForm-text">

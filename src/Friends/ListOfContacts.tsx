@@ -3,7 +3,7 @@ import { profileDTO } from "../Profile/profiles.models";
 import GenericList from "../Utilities/GenericList";
 import Contact from "./Contact";
 
-export default function ListOfContacts(props: friendsListProps) {
+export default function ListOfContacts(props: listOfContactsProps) {
     return (
       <GenericList list={props.friends}>
         <div className="scroller">
@@ -20,7 +20,7 @@ export default function ListOfContacts(props: friendsListProps) {
       </GenericList>
     );
   }
-  interface friendsListProps {
+  interface listOfContactsProps {
     friends?: profileDTO[];
     setCurrentOpenChats:any;
     openChats:any

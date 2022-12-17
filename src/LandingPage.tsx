@@ -6,6 +6,7 @@ import Authorized from "./auth/Authorized";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import ListOfContacts from "./Friends/ListOfContacts";
+import ChatWithFriend from "./Messages/ChatWithFriend";
 import PostContainer from "./Posts/PostContainer";
 import PostForm from "./Posts/PostForm";
 import PostsList from "./Posts/PostsList";
@@ -20,7 +21,7 @@ export default function LandingPage() {
   const { profileDTO } = useContext(ProfileContext);
   const { profileFriends } = useContext(ProfileFriendsContext);
 
-  let [openedChats,setOpenedChats] = useState<[]>([])
+  const [openedChats, setOpenedChats] = useState<[]>([]);
 
   const navigate = useNavigate();
 
@@ -74,13 +75,29 @@ export default function LandingPage() {
             </div>
 
             <div className="rightBar">
-              <span className="contacts">Contacts
-                <img className="contacts-search" src="/search.png"/>
+              <span className="contacts">
+                Contacts
+                <img className="contacts-search" src="/search.png" />
               </span>
-              <ListOfContacts friends={profileFriends}  setCurrentOpenChats={setOpenedChats} openChats={openedChats}/>
+              <ListOfContacts
+                friends={profileFriends}
+                setCurrentOpenChats={setOpenedChats}
+                openChats={openedChats}
+              />
             </div>
             <div className="listOfOpenedChats">
-              {openedChats}
+              {openedChats.map(
+                ({ key, userProfile, friendProfile, setChatOpened }) => (
+                  <ChatWithFriend
+                    key={key}
+                    userProfile={userProfile}
+                    friendProfile={friendProfile}
+                    setOpenedChats={setOpenedChats}
+                    openChats={openedChats}
+                    setChatOpened={setChatOpened}
+                  />
+                )
+              )}
             </div>
           </>
         }

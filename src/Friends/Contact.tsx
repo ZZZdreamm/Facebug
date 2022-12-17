@@ -22,10 +22,19 @@ export default function Contact(props:contactProps){
     return( 
         <>
             <div className="contact-friend" onClick={()=>{
-                console.log(props.openChats)
                 if(chatOpened== false){
-                    props.setOpenedChats([...props.openChats,<ChatWithFriend key={props.profile.id} userProfile={profileDTO} friendProfile={props.profile} openChats={props.openChats} setOpenedChats={props.setOpenedChats} setChatOpened ={setChatOpened}/>])
                     setChatOpened(true)
+                    props.setOpenedChats([...props.openChats,
+                        {key:props.profile.id,userProfile:profileDTO,friendProfile:props.profile,
+                             setChatOpened:setChatOpened}])
+                    // console.log(props.profile.id)
+                    // var chats = document.getElementsByClassName("chat-body")
+                    // var chat = document.getElementById("modal-body-")
+                    // var chatetrs = document.querySelector(".chat-body")
+                    // console.log(chatetrs)
+                    // console.log(chat)
+                    // console.log(chats)
+                    // chat?.scrollTo(0,chat.scrollHeight)
                 }
             
             }}>

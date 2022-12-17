@@ -31,7 +31,7 @@ export default function UserFriendsRequests() {
       axios
         .get(`${urlFriends}/sentFriendRequests/${profileDTO.email}`)
         .then((response: AxiosResponse<friendRequest[]>) => {
-            setSentFriendRequests(response.data);
+          setSentFriendRequests(response.data);
         });
     }
   }, [profileDTO]);
@@ -56,11 +56,23 @@ export default function UserFriendsRequests() {
                 Show your sent requests
               </span>
             }
-            header={<div className="requestsModalHeader">Friend Requests</div>}
+            header={
+              <>
+                <div className="requestsModalHeader">Friend Requests</div>
+                <span
+                  className="closeModal"
+                  onClick={() => {
+                    setDisplayModal(displayModal - 1);
+                  }}
+                >
+                  X
+                </span>
+              </>
+            }
             body={
               <div className="requestsModalBody">
                 <div className="sentRequests">
-                  <span>{amountOfSentRequests} sent requests</span>
+                  <span>Sent requests</span>
                   <SentFriendRequestsList friendRequests={sentfriendRequests} />
                 </div>
               </div>
