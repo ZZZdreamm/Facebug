@@ -49,9 +49,9 @@ export default function Modal(props: modalProps) {
 
 interface modalProps {
   body: ReactElement;
-  header:ReactElement;
+  header?:ReactElement;
   footer?:ReactElement;
-  modalDisplayer: ReactElement;
+  modalDisplayer?: ReactElement;
   doDisplay: number;
-  withFooter:boolean;
+  withFooter?:boolean;
 }

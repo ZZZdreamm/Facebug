@@ -147,7 +147,7 @@
   position: absolute;
   bottom: 10%;
   left: 20%;
- 
+
 }
 .profile-name{
   margin-left: 4px;
@@ -182,8 +182,8 @@
   height: 50px;
   background-color:aliceblue;
   cursor: pointer;
-  
- 
+
+
 }
 .notVisible{
   display: none;
@@ -378,13 +378,12 @@
   position: absolute;
   right: 15px;
   bottom: 4%;
-  background-color: white;
   z-index: 2;
   cursor: pointer;
   width: 160px;
   height: 36px;
   font-size: 16px;
-  
+
 }
 .fileUploader-container:hover{
   background-color: antiquewhite;
@@ -404,6 +403,7 @@
   display:  flex;
   align-items: center;
   justify-content: center;
+  padding-left: 20px;
 
 }
 .doYouWantToDiv{
@@ -877,11 +877,8 @@ textarea{
   justify-content: space-between;
 }
 .chat-footer-text{
-  position: absolute;
-  bottom: 0;
-  left: 100px;
   display: flex;
-  flex-direction: column-reverse;
+  /* flex-direction: column-reverse; */
   border-radius: 20px;
   background-color: white;
   min-width: 150px;
@@ -890,10 +887,11 @@ textarea{
   padding: 7px;
   min-height: 35px;
   max-height: 170px;
-  user-select: text;
-  white-space: pre-wrap;
-  word-break: break-word;
+  /* user-select: text; */
+  /* white-space: pre-wrap; */
+  /* word-break: break-word; */
   overflow-y: auto;
+  margin-bottom: 15px;
 }
 .chat-footer-sendMessage{
   /* position: relative;
@@ -905,9 +903,9 @@ textarea{
   cursor: pointer;
 }
 .sendMessageBtn{
-  position: relative;
-  top: 2px;
-  left: 82%;
+  position: absolute;
+  bottom: 6px;
+  right: 6%;
   border: none;
   height: 40px;
   width: 40px;
@@ -942,17 +940,11 @@ textarea{
   border-radius: 20px;
   overflow-wrap: break-word;
 }
-/* .friend-message-text{
-  background-color: rgb(111, 172, 189);
-}
-.my-message-text{
-  background-color: linear-gradient(0deg,rgb(147, 111, 189), rgb(69, 86, 171));
-  background-color: rgb(147, 111, 189);
-} */
+
 .sendLikeBtn{
-  position: absolute;
+  /* position: absolute;
   bottom: 0px;
-  right: 5px;
+  right: 5px; */
   border: none;
   height: 50px;
   width: 57px;
@@ -964,12 +956,13 @@ textarea{
   left: 40px;
   max-height: 300px;
   max-width: 150px;
+  cursor: pointer;
 }
-.sending-image{
-  height: 60px;
-  width: 150px;
+/* .sending-image{
+  height: 40px;
+  width: 80px;
   background-color: grey;
-}
+} */
 .long-message-text{
   position: absolute;
   bottom: 0;
@@ -986,4 +979,37 @@ textarea{
   white-space: pre-wrap;
   word-break: break-word;
   overflow-y: auto;
+}
+.bigImageContainer{
+  position: fixed;
+  left: 60vh;
+  top:20vh;
+  z-index: 10;
+  width: 60vh;
+  height: 60vh;
+  padding: 2vh;
+  background-color: #999faa;
+}
+.bigImage{
+  width: 56vh;
+  height: 56vh;
+  pointer-events: auto;
+}
+.closeImage{
+  position: absolute;
+  right: 5px;
+  top:5px;
+  cursor: pointer;
+}
+.toSendImage{
+  height: 40px;
+  width: 40px;
+}
+.deleteImage{
+  position: relative;
+  bottom: 16px;
+  right: 5px;
+}
+.uploader{
+  
 }

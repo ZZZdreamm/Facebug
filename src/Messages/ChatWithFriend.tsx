@@ -7,6 +7,7 @@ import ChatsOpenedContext from "./ChatsOpenedContext";
 import ListOfMessages from "./ListOfMessages";
 import { messageDTO } from "./messages.models";
 import ImageUploader from "../Utilities/ImageUploader";
+import { BaseSchema } from "yup";
 
 export default function ChatWithFriend(props: chatWithFriendProps) {
   const [image, setImage] = useState<string>();
@@ -25,6 +26,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     onChange() {},
   });
 
+  const refImageDiv = useRef<any>(null)
 
 
   useEffect(() => {
@@ -43,7 +45,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     getMessages();
   }, []);
   useEffect(()=>{
-    console.log(chatOpenedAlready)
+    // console.log(chatOpenedAlready)
     if(refScroll.current == null){
       return
     }
@@ -60,7 +62,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
         setMessages(response.data)
         setChatOpenedAlready(true)
       })
-    
+
   }
   async function sendMessage(image?: any){
     setSendingMessage(true)
@@ -95,11 +97,10 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
 
   async function handleScroll(){
     var element = document.getElementById("modal-body-" + `${props.friendProfile.id}`)
-    console.log(messages.length)
-    console.log(numberOfMessagesStacks)
+    // console.log(messages.length)
+    // console.log(numberOfMessagesStacks)
     if(element!.scrollTop < element!.clientHeight && (numberOfMessagesStacks-1)*15 == messages.length){
         setNumberOfMessagesStacks(numberOfMessagesStacks+1)
-      
         getMessages()
 
     }
@@ -113,6 +114,21 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
   useEffect(()=>{
     setTextingDivState(textToSend == "" ? "chat-footer-text" : "long-message-text")
   },[textToSend])
+
+  useEffect(()=>{
+    var messageContainer = document.getElementById('message '+props.friendProfile.id)
+    if(baseImage){
+      messageContainer?.setAttribute('contentEditable', 'false')
+    }
+    else{
+      messageContainer?.setAttribute('contentEditable', 'true')
+    }
+
+    // if(refImageDiv.current == null){
+    //   return
+    // }
+    // refImageDiv.current.appendChild(<div>{imageName}<span onClick={removeSendingImage}>{deleteImage}</span></div>)
+  },[baseImage])
   return (
     <>
       <div className="chat">
@@ -132,18 +148,22 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
           </div>
         </div>
         <div className="chat-body" id={"modal-body-" + `${props.friendProfile.id}`} onScroll={handleScroll}>
-          <ListOfMessages messages={messages} userId={props.userProfile.id} friendId={props.friendProfile.id} friendProfileImage={image!}  refff={refScroll}/>        
+          <ListOfMessages messages={messages} userId={props.userProfile.id} friendId={props.friendProfile.id} friendProfileImage={image!}  refff={refScroll}/>
         </div>
         <div className="chat-footer">
-          {textToSend === "" ? ImageUpload : null}
+          {textToSend === "" ? <div className="uploader">{ImageUpload}</div> : null}
           <div id={'message '+`${props.friendProfile.id}`} className={textingDivState} contentEditable
-           onKeyDown={()=> {setTextToSend(document.getElementById(`message ${props.friendProfile.id}`)?.textContent!)}}>
-            {baseImage ? <div id={`image-to-send +${props.friendProfile.id}`} className="sending-image">{imageName}<span onClick={removeSendingImage}>{deleteImage}</span></div>: null}
+           onKeyDownCapture={()=> {setTextToSend(document.getElementById(`message ${props.friendProfile.id}`)?.textContent!)}}>
+            {baseImage ?
+
+            //  <div id={`image-to-send ${props.friendProfile.id}`} className="sending-image" ref={refImageDiv}>
+              <div><img className="toSendImage" src={baseImage}/><span className="deleteImage" onClick={removeSendingImage}>{deleteImage}</span></div>
+             : null}
             </div>
-          
-          {textToSend === "" ? <img className="sendLikeBtn" src="/like.png" onClick={()=> sendMessage()}/> :
+
+          {textToSend === "" && (baseImage == '' || baseImage == null) ? <img className="sendLikeBtn" src="/like.png" onClick={()=> sendMessage()}/> :
             <button id="sendMessageButton" disabled={sendingMessage} type="submit" className="sendMessageBtn"  onClick={()=> {
-              sendMessage(baseImage)
+              sendMessage(fileToData)
               }}>
               <img className="chat-footer-sendMessage" src="/sendBtn.png"/>
             </button>
