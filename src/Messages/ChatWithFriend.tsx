@@ -8,26 +8,28 @@ import ListOfMessages from "./ListOfMessages";
 import { messageDTO } from "./messages.models";
 import ImageUploader from "../Utilities/ImageUploader";
 import { BaseSchema } from "yup";
+import * as ReactDOMServer from "react-dom/server";
+import UploadManyImages from "../Utilities/UploadManyImages";
 
 export default function ChatWithFriend(props: chatWithFriendProps) {
   const [image, setImage] = useState<string>();
   const [messages, setMessages] = useState<any>([]);
-  const [sendingMessage,setSendingMessage] = useState(false)
-  const refScroll = useRef<any>(null)
-  const [numberOfMessagesStacks, setNumberOfMessagesStacks] = useState(1)
-  const [chatOpenedAlready,setChatOpenedAlready] = useState(false)
+  const [sendingMessage, setSendingMessage] = useState(false);
+  const refScroll = useRef<any>(null);
+  const [numberOfMessagesStacks, setNumberOfMessagesStacks] = useState(1);
+  const [chatOpenedAlready, setChatOpenedAlready] = useState(false);
 
-  const [textToSend,setTextToSend] = useState("")
-  const [textingDivState, setTextingDivState] = useState<string>()
+  const [textToSend, setTextToSend] = useState("");
+  const [textingDivState, setTextingDivState] = useState<string>();
 
-  const {imageName, fileToData, baseImage, ImageUpload,deleteImage} = ImageUploader({
-    textContent: "Send Image",
-    image: ``,
-    onChange() {},
-  });
+  const { imageName, fileToData, baseImage, ImageUpload, deleteImage, images, setImages } =
+    UploadManyImages({
+      textContent: "Send Image",
+      image: ``,
+      onChange() {},
+    });
 
-  const refImageDiv = useRef<any>(null)
-
+  const [imagesToSend, setImagesToSend] = useState(false)
 
   useEffect(() => {
     if (
@@ -44,91 +46,111 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
   useEffect(() => {
     getMessages();
   }, []);
-  useEffect(()=>{
-    // console.log(chatOpenedAlready)
-    if(refScroll.current == null){
-      return
+  useEffect(() => {
+    if (refScroll.current == null) {
+      return;
     }
-    refScroll.current.scrollIntoView()
-  },[refScroll,chatOpenedAlready])
+    refScroll.current.scrollIntoView();
+  }, [refScroll, chatOpenedAlready]);
 
-  // useEffect(()=>{
-  //   console.log(textToSend)
-  // },[textToSend])
   async function getMessages() {
-    await axios.get(`${urlMessages}/get/${props.userProfile.id}/${props.friendProfile.id}/${numberOfMessagesStacks}`)
-      .then((response:AxiosResponse<messageDTO[]>) => {
-        setNumberOfMessagesStacks(numberOfMessagesStacks+1)
-        setMessages(response.data)
-        setChatOpenedAlready(true)
-      })
-
+    await axios
+      .get(
+        `${urlMessages}/get/${props.userProfile.id}/${props.friendProfile.id}/${numberOfMessagesStacks}`
+      )
+      .then((response: AxiosResponse<messageDTO[]>) => {
+        setNumberOfMessagesStacks(numberOfMessagesStacks + 1);
+        setMessages(response.data);
+        setChatOpenedAlready(true);
+      });
   }
-  async function sendMessage(image?: any){
-    setSendingMessage(true)
-    var formData = new FormData()
-    var date = new Date().toTimeString()
-    var textDiv = document.getElementById("message " + props.friendProfile.id)
-    const text = textDiv?.textContent
-    formData.append("SenderId",props.userProfile.id)
-    formData.append("ReceiverId",props.friendProfile.id)
-    if(image){
-      formData.append("ImageContent",image)
+  async function sendMessage(image?: any) {
+    setSendingMessage(true);
+    var formData = new FormData();
+    var date = new Date().toTimeString();
+    var textDiv = document.getElementById("message " + props.friendProfile.id);
+    const text = textDiv?.textContent;
+    formData.append("SenderId", props.userProfile.id);
+    formData.append("ReceiverId", props.friendProfile.id);
+    if (image) {
+      formData.append("ImageContent", image);
+    } else {
+      formData.append("TextContent", text!);
     }
-    else{
-      formData.append("TextContent",text!)
-    }
-    formData.append("Date",date)
-    console.log(image)
-    axios.post(`${urlMessages}/send`,formData)
-    textDiv!.innerHTML = ""
+    formData.append("Date", date);
+    console.log(image);
+    axios.post(`${urlMessages}/send`, formData);
+    textDiv!.innerHTML = "";
 
-    setTimeout(()=> {
-      setSendingMessage(false)
-      axios.get(`${urlMessages}/getnewest/${props.userProfile.id}/${props.friendProfile.id}`)
-      .then((response) => {
-      setMessages([...messages,response.data[0]])
-      setTimeout(() => {
-        refScroll.current.scrollIntoView()
-      }, 300);
-    })
-    },2000)
+    setTimeout(() => {
+      setSendingMessage(false);
+      axios
+        .get(
+          `${urlMessages}/getnewest/${props.userProfile.id}/${props.friendProfile.id}`
+        )
+        .then((response) => {
+          setMessages([...messages, response.data[0]]);
+          setTimeout(() => {
+            refScroll.current.scrollIntoView();
+          }, 300);
+        });
+    }, 2000);
   }
 
-  async function handleScroll(){
-    var element = document.getElementById("modal-body-" + `${props.friendProfile.id}`)
+  async function handleScroll() {
+    var element = document.getElementById(
+      "modal-body-" + `${props.friendProfile.id}`
+    );
     // console.log(messages.length)
     // console.log(numberOfMessagesStacks)
-    if(element!.scrollTop < element!.clientHeight && (numberOfMessagesStacks-1)*15 == messages.length){
-        setNumberOfMessagesStacks(numberOfMessagesStacks+1)
-        getMessages()
-
+    if (
+      element!.scrollTop < element!.clientHeight &&
+      (numberOfMessagesStacks - 1) * 15 == messages.length
+    ) {
+      setNumberOfMessagesStacks(numberOfMessagesStacks + 1);
+      getMessages();
     }
   }
 
-  function removeSendingImage(){
-    var senderImage = document.getElementById(`image-to-send + ${props.friendProfile.id}`)
-    senderImage?.remove()
+  function removeSendingImage(imageId: number) {
+
+    console.log(imageId)
+    var imgs = images.filter((image) => image.id !== imageId)
+    setImages(imgs)
+    console.log(images)
   }
 
-  useEffect(()=>{
-    setTextingDivState(textToSend == "" ? "chat-footer-text" : "long-message-text")
-  },[textToSend])
+  useEffect(() => {
+    setTextingDivState(
+      textToSend === ""
+        ? "chat-footer-text"
+        : "long-message-text"
+    );
+  }, [textToSend]);
 
-  useEffect(()=>{
-    var messageContainer = document.getElementById('message '+props.friendProfile.id)
-    if(baseImage){
-      messageContainer?.setAttribute('contentEditable', 'false')
-    }
-    else{
-      messageContainer?.setAttribute('contentEditable', 'true')
+
+  useEffect(() => {
+    setTextingDivState(
+      imagesToSend == true
+      ? "image-message-to-send"
+      : "chat-footer-text"
+    );
+  }, [imagesToSend]);
+
+  useEffect(() => {
+    var messageContainer = document.getElementById(
+      "message " + props.friendProfile.id
+    );
+    if (images[0]) {
+      messageContainer?.setAttribute("contentEditable", "false");
+      setImagesToSend(true)
+    } else {
+      messageContainer?.setAttribute("contentEditable", "true");
+      setImagesToSend(false)
     }
 
-    // if(refImageDiv.current == null){
-    //   return
-    // }
-    // refImageDiv.current.appendChild(<div>{imageName}<span onClick={removeSendingImage}>{deleteImage}</span></div>)
-  },[baseImage])
+    console.log(imagesToSend);
+  }, [images]);
   return (
     <>
       <div className="chat">
@@ -139,35 +161,87 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
               {props.friendProfile.email}
             </span>
           </div>
-          <div className="chat-close" onClick={()=>{
-            var opened = props.openChats.filter((item: { key: string; }) => item.key !== props.friendProfile.id)
-            props.setOpenedChats(opened)
-            props.setChatOpened(false)
-            }}>
+          <div
+            className="chat-close"
+            onClick={() => {
+              var opened = props.openChats.filter(
+                (item: { key: string }) => item.key !== props.friendProfile.id
+              );
+              props.setOpenedChats(opened);
+              props.setChatOpened(false);
+            }}
+          >
             X
           </div>
         </div>
-        <div className="chat-body" id={"modal-body-" + `${props.friendProfile.id}`} onScroll={handleScroll}>
-          <ListOfMessages messages={messages} userId={props.userProfile.id} friendId={props.friendProfile.id} friendProfileImage={image!}  refff={refScroll}/>
+        <div
+          className="chat-body"
+          id={"modal-body-" + `${props.friendProfile.id}`}
+          onScroll={handleScroll}
+        >
+          <ListOfMessages
+            messages={messages}
+            userId={props.userProfile.id}
+            friendId={props.friendProfile.id}
+            friendProfileImage={image!}
+            refff={refScroll}
+          />
         </div>
         <div className="chat-footer">
-          {textToSend === "" ? <div className="uploader">{ImageUpload}</div> : null}
-          <div id={'message '+`${props.friendProfile.id}`} className={textingDivState} contentEditable
-           onKeyDownCapture={()=> {setTextToSend(document.getElementById(`message ${props.friendProfile.id}`)?.textContent!)}}>
-            {baseImage ?
+          {textToSend == "" ? (
+            <div className="uploader">{ImageUpload}</div>
+          ) : null}
+          <div
+            id={"message " + `${props.friendProfile.id}`}
+            className={textingDivState}
+            contentEditable
+            onKeyDown={(e) => {
+              console.log(e.target.textContent)
+              setTextToSend(
+                e.target.textContent
+              )
+            }}
+          >
 
-            //  <div id={`image-to-send ${props.friendProfile.id}`} className="sending-image" ref={refImageDiv}>
-              <div><img className="toSendImage" src={baseImage}/><span className="deleteImage" onClick={removeSendingImage}>{deleteImage}</span></div>
-             : null}
+            <div
+              id={`image-to-send ${props.friendProfile.id}`}
+              className="sending-images-holder"
+            >
+                {images.map((image) =>
+                  // image.src != "" && image.src != undefined && image.src != null && image.src != 'undefined' ? (
+                    <div id={`sendingImage ${props.friendProfile.id} ${image.id}`} key={image.id}>
+                      <img className="toSendImage" src={image.src} />
+                      <span
+                        className="deleteImage"
+                        onClick={() => removeSendingImage(image.id)}
+                      >
+                        {deleteImage}
+                      </span>
+                    </div>
+                  // ) : null
+                )}
             </div>
+          </div>
 
-          {textToSend === "" && (baseImage == '' || baseImage == null) ? <img className="sendLikeBtn" src="/like.png" onClick={()=> sendMessage()}/> :
-            <button id="sendMessageButton" disabled={sendingMessage} type="submit" className="sendMessageBtn"  onClick={()=> {
-              sendMessage(fileToData)
-              }}>
-              <img className="chat-footer-sendMessage" src="/sendBtn.png"/>
+          {textToSend === "" && imagesToSend == false ? (
+            <img
+              className="sendLikeBtn"
+              src="/like.png"
+              onClick={() => sendMessage()}
+            />
+          ) : (
+            <button
+              id="sendMessageButton"
+              disabled={sendingMessage}
+              type="submit"
+              className="sendMessageBtn"
+              onClick={() => {
+                sendMessage(fileToData);
+              }}
+            >
+              <img className="chat-footer-sendMessage" src="/sendBtn.png" />
             </button>
-          }
+          )}
         </div>
       </div>
     </>
@@ -177,7 +251,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
 interface chatWithFriendProps {
   userProfile: profileDTO;
   friendProfile: profileDTO;
-  setOpenedChats:any;
-  openChats:any;
-  setChatOpened:any;
+  setOpenedChats: any;
+  openChats: any;
+  setChatOpened: any;
 }

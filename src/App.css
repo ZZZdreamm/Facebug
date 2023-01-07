@@ -398,12 +398,12 @@
 .fileUploader-container{
   background-color: white;
   cursor: pointer;
-  margin: 5px 10px;
+  /* margin: 5px 10px; */
   border-radius: 20px;
   display:  flex;
   align-items: center;
   justify-content: center;
-  padding-left: 20px;
+  padding-left: 10px;
 
 }
 .doYouWantToDiv{
@@ -878,10 +878,12 @@ textarea{
 }
 .chat-footer-text{
   display: flex;
+  position: relative;
+  right: 0;
   /* flex-direction: column-reverse; */
   border-radius: 20px;
   background-color: white;
-  min-width: 150px;
+  min-width: 200px;
   max-width: 250px;
   margin: 5px;
   padding: 7px;
@@ -958,11 +960,15 @@ textarea{
   max-width: 150px;
   cursor: pointer;
 }
-/* .sending-image{
-  height: 40px;
-  width: 80px;
+.sending-images-holder{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: 12.5px;
+  row-gap: 10px;
+  column-count: 3;
   background-color: grey;
-} */
+}
 .long-message-text{
   position: absolute;
   bottom: 0;
@@ -997,8 +1003,10 @@ textarea{
 }
 .closeImage{
   position: absolute;
-  right: 5px;
-  top:5px;
+  right: -4px;
+  top:8px;
+  height: 10px;
+  width: 10px;
   cursor: pointer;
 }
 .toSendImage{
@@ -1011,5 +1019,24 @@ textarea{
   right: 5px;
 }
 .uploader{
-  
+  width: 40px;
+  height: 48px;
+}
+.image-message-to-send{
+  position: absolute;
+  left: 90px;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  border-radius: 20px;
+  background-color: white;
+  width: 160px;
+  margin: 5px;
+  padding: 7px;
+  min-height: 35px;
+  max-height: 170px;
+  user-select: text;
+  white-space: pre-wrap;
+  word-break: break-word;
+  /* overflow-y:; */
 }

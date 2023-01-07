@@ -1,29 +1,46 @@
 import { useEffect, useRef, useState } from "react";
+import { imageModel } from "./images.models";
 
-export default function ImageUploader(props: imageUploaderProps) {
+export default function UploadManyImages(props: imageUploaderProps) {
   const [fileToData, setFileToData] = useState<File>();
   const [baseImage, setBaseImage] = useState(props.image);
   const [modalDisplay, setModalDisplay] = useState("none");
 
   const [imageName,setImageName] = useState("")
+  const [images, setImages] = useState<imageModel[]>([])
+  let amountOfImages = 1
 
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
     setImageName(file.name)
-    console.log(imageName)
+    // console.log(imageName)
     const base64: any = await convertBase64(file);
     setBaseImage(base64);
     setFileToData(file);
     setModalDisplay("flex");
   };
   useEffect(()=> {
-    if(props.image === "undefined" || props.image === "null")
-    {
-      setBaseImage("/noProfile.jpg")
-      return
-    }
     setBaseImage(props.image)
   },[props.image])
+
+  useEffect(()=>{
+    if(baseImage != '' && baseImage != undefined && baseImage != null){
+        var imgs = []
+        images.forEach(image => {
+            if (image.src != "" && image.src != undefined && image.src != null && image.src != 'undefined'){
+                var tempImage: imageModel = {
+                    id: image.id,
+                    src: image.src
+                }
+                amountOfImages += 1
+                imgs.push(tempImage)
+            }
+        });
+        imgs.push({id: amountOfImages, src: baseImage!})
+        setImages(imgs)
+        console.log(images)
+    }
+  }, [baseImage])
 
   const convertBase64 = (file: File) => {
     return new Promise((resolve, reject) => {
@@ -44,12 +61,14 @@ export default function ImageUploader(props: imageUploaderProps) {
     setFileToData(undefined)
   }
   return {
+    images,
+    setImages,
     imageName,
     fileToData,
     baseImage,
     deleteImage: (
-      <span style={{marginLeft:"5px", cursor:"pointer"}}
-             onClick={() => removeSendingImage()}>X</span>
+      <img src="/red X.png" className="closeImage" style={{marginLeft:"5px", cursor:"pointer"}}
+             onClick={() => removeSendingImage()}/>
     ),
     ImageUpload: (
 
