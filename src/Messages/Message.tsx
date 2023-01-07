@@ -15,13 +15,15 @@ export default function Message(props: messageProps) {
     var img = (
       <div className="bigImageContainer" style={{pointerEvents: "auto" }}>
         <img className="bigImage" src={image} onClick={()=>console.log("SDSD")}/>
-        <span className="closeImage" onClick={()=> setShowImage(false)}>X</span>
+        <img src="/red X.png" className="closeBigImage" style={{marginLeft:"5px", cursor:"pointer"}}
+             onClick={() => setShowImage(false)}/>
+        {/* <span className="closeImage" onClick={()=> setShowImage(false)}>X</span> */}
       </div>
     );
     setBigImage(img);
     setShowImage(true);
   }
-  
+
   var overlay = showImage ? "overlayDisplayed" : "overlay";
   return (
     <>

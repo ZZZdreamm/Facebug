@@ -63,6 +63,7 @@ export default function UploadManyImages(props: imageUploaderProps) {
   return {
     images,
     setImages,
+    setFileToData,
     imageName,
     fileToData,
     baseImage,

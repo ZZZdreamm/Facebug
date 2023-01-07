@@ -22,14 +22,22 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
   const [textToSend, setTextToSend] = useState("");
   const [textingDivState, setTextingDivState] = useState<string>();
 
-  const { imageName, fileToData, baseImage, ImageUpload, deleteImage, images, setImages } =
-    UploadManyImages({
-      textContent: "Send Image",
-      image: ``,
-      onChange() {},
-    });
+  const {
+    imageName,
+    fileToData,
+    baseImage,
+    ImageUpload,
+    deleteImage,
+    images,
+    setImages,
+    setFileToData
+  } = UploadManyImages({
+    textContent: "Send Image",
+    image: ``,
+    onChange() {},
+  });
 
-  const [imagesToSend, setImagesToSend] = useState(false)
+  const [imagesToSend, setImagesToSend] = useState(false);
 
   useEffect(() => {
     if (
@@ -80,7 +88,6 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     formData.append("Date", date);
     console.log(image);
     axios.post(`${urlMessages}/send`, formData);
-    textDiv!.innerHTML = "";
 
     setTimeout(() => {
       setSendingMessage(false);
@@ -90,6 +97,10 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
         )
         .then((response) => {
           setMessages([...messages, response.data[0]]);
+          setTextToSend('')
+          setImages([])
+          setFileToData(undefined)
+          textDiv!.innerHTML = "";
           setTimeout(() => {
             refScroll.current.scrollIntoView();
           }, 300);
@@ -113,27 +124,21 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
   }
 
   function removeSendingImage(imageId: number) {
-
-    console.log(imageId)
-    var imgs = images.filter((image) => image.id !== imageId)
-    setImages(imgs)
-    console.log(images)
+    console.log(imageId);
+    var imgs = images.filter((image) => image.id !== imageId);
+    setImages(imgs);
+    console.log(images);
   }
 
   useEffect(() => {
     setTextingDivState(
-      textToSend === ""
-        ? "chat-footer-text"
-        : "long-message-text"
+      textToSend === "" ? "chat-footer-text" : "long-message-text"
     );
   }, [textToSend]);
 
-
   useEffect(() => {
     setTextingDivState(
-      imagesToSend == true
-      ? "image-message-to-send"
-      : "chat-footer-text"
+      imagesToSend == true ? "image-message-to-send" : "chat-footer-text"
     );
   }, [imagesToSend]);
 
@@ -143,13 +148,13 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     );
     if (images[0]) {
       messageContainer?.setAttribute("contentEditable", "false");
-      setImagesToSend(true)
+      setImagesToSend(true);
     } else {
       messageContainer?.setAttribute("contentEditable", "true");
-      setImagesToSend(false)
+      setImagesToSend(false);
     }
-
-    console.log(imagesToSend);
+    console.log(baseImage)
+    // console.log(imagesToSend);
   }, [images]);
   return (
     <>
@@ -191,35 +196,36 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
           {textToSend == "" ? (
             <div className="uploader">{ImageUpload}</div>
           ) : null}
-          <div
-            id={"message " + `${props.friendProfile.id}`}
-            className={textingDivState}
-            contentEditable
-            onKeyDown={(e) => {
-              console.log(e.target.textContent)
-              setTextToSend(
-                e.target.textContent
-              )
-            }}
-          >
-
+          <div className={textingDivState}>
+            <div
+              id={"message " + `${props.friendProfile.id}`}
+              className='message-to-send'
+              contentEditable
+              onInput={(e) => {
+                // @ts-ignore
+                console.log(e.target.textContent);
+                // @ts-ignore
+                setTextToSend(e.target.textContent);
+              }}
+            ></div>
             <div
               id={`image-to-send ${props.friendProfile.id}`}
               className="sending-images-holder"
             >
-                {images.map((image) =>
-                  // image.src != "" && image.src != undefined && image.src != null && image.src != 'undefined' ? (
-                    <div id={`sendingImage ${props.friendProfile.id} ${image.id}`} key={image.id}>
-                      <img className="toSendImage" src={image.src} />
-                      <span
-                        className="deleteImage"
-                        onClick={() => removeSendingImage(image.id)}
-                      >
-                        {deleteImage}
-                      </span>
-                    </div>
-                  // ) : null
-                )}
+              {images.map((image) => (
+                <div
+                  id={`sendingImage ${props.friendProfile.id} ${image.id}`}
+                  key={image.id}
+                >
+                  <img className="toSendImage" src={image.src} />
+                  <span
+                    className="deleteImage"
+                    onClick={() => removeSendingImage(image.id)}
+                  >
+                    {deleteImage}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
