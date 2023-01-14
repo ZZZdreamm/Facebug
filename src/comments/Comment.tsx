@@ -22,15 +22,15 @@ export default function Comment(props: commentsDTO) {
   }
   return (
     <div className="comment-container">
-      
+
         <img
           className="commentProfileImage"
           src={props.autorProfileImage}
           alt="profile"
         />
-
+      <div className="comment">
        <span className="comment-name">{props.autorName}</span>
-      
+
       <div className="comment-text" style={{lineBreak:"anywhere"}}>
         {textOverflown ? (
             <>
@@ -50,6 +50,7 @@ export default function Comment(props: commentsDTO) {
           ) : (
             props.textContent
           )}
+        </div>
         </div>
     </div>
   );

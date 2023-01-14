@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { imageModel } from "./images.models";
 
 export default function UploadManyImages(props: imageUploaderProps) {
-  const [fileToData, setFileToData] = useState<File>();
+  const [fileToData, setFileToData] = useState<File[]>([]);
   const [baseImage, setBaseImage] = useState(props.image);
   const [modalDisplay, setModalDisplay] = useState("none");
 
@@ -16,7 +16,13 @@ export default function UploadManyImages(props: imageUploaderProps) {
     // console.log(imageName)
     const base64: any = await convertBase64(file);
     setBaseImage(base64);
-    setFileToData(file);
+    var fils = []
+        fileToData.forEach(file => {
+                var tempFile = file
+                fils.push(tempFile)
+        });
+        fils.push(file)
+    setFileToData(fils);
     setModalDisplay("flex");
   };
   useEffect(()=> {
@@ -38,7 +44,7 @@ export default function UploadManyImages(props: imageUploaderProps) {
         });
         imgs.push({id: amountOfImages, src: baseImage!})
         setImages(imgs)
-        console.log(images)
+        console.log(fileToData)
     }
   }, [baseImage])
 
@@ -53,12 +59,12 @@ export default function UploadManyImages(props: imageUploaderProps) {
 
   function dismissChanges() {
     setBaseImage(props.image);
-    setFileToData(undefined);
+    setFileToData([]);
     setModalDisplay("none");
   }
   function removeSendingImage(){
     setBaseImage(undefined)
-    setFileToData(undefined)
+    setFileToData([])
   }
   return {
     images,
@@ -78,6 +84,7 @@ export default function UploadManyImages(props: imageUploaderProps) {
             style={{ display: "none" }}
             type="file"
             accept=".jpg,.jpeg,.png"
+            // multiple
             onChange={(e) => uploadImage(e)}
           />
           {props.textContent}

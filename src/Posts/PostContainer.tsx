@@ -85,15 +85,14 @@ export default function PostContainer(props: postDTO) {
   }
 
   async function commentPost(comment: commentsCreationDTO) {
-    console.log(comment);
     const formData = convertCommentToFormData(comment);
-    console.log(formData);
     axios({
       method: "POST",
       url: `${urlComments}/create`,
       data: formData,
       headers: { "Content-Type": "multipart/form-data" },
     });
+    setText('')
     setAmountOfComments(amountOfComments + 1);
   }
 
@@ -154,7 +153,7 @@ export default function PostContainer(props: postDTO) {
             {amountOfLikes}
           </span>
           {userLiked ? (
-            <button className="likeBtn" style={{ backgroundColor: "blue" }} onClick={() => deleteLike(props.id)}>
+            <button className="likeBtn" style={{ backgroundColor: "#6495ed" }} onClick={() => deleteLike(props.id)}>
               Like
             </button>
           ) : (
@@ -194,7 +193,7 @@ export default function PostContainer(props: postDTO) {
                   className="mt-2 ml-2 postContent"
                   onChange={(e) => setText(e.target.value)}
                 ></textarea>
-                <button type="submit">Comment</button>
+                <button className="submitCommentBtn" type="submit">Comment</button>
               </Form>
             </Formik>
             <div className="commentsArea">

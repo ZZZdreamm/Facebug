@@ -272,6 +272,7 @@
 .likeBtn{
   margin-left: 10px;
   margin-top: 10px;
+  margin-bottom: 15px;
   width: 30%;
   border-radius: 10px;
   border: none;
@@ -279,6 +280,7 @@
 .commentBtn{
   margin-left: 10px;
   margin-top: 10px;
+  margin-bottom: 15px;
   width: 30%;
   border-radius: 10px;
   border: none;
@@ -310,21 +312,32 @@
   width: 100%;
 }
 .comment-container{
+  display: flex;
   margin-top: 20px;
-  border: 2px solid black;
   width: 100%;
+}
+.comment{
+  margin: 5px;
+  background-color: #f0f8ff;
+  border-radius: 20px;
+  padding: 8px;
+}
+.comment-name{
+  font-weight: bold;
 }
 .comment-text{
-  background-color: pink;
   font-size: 16px;
-  padding: 6px;
-  width: 100%;
+  /* width: 100%; */
 }
 .commentProfileImage{
- margin: 4px;
-  width: 30px;
-  height: 30px;
+  margin: 8px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+}
+.submitCommentBtn{
+  border-radius: 20px;
+  margin-left: 20px;
 }
 .registerImage-container{
   height: 300px;

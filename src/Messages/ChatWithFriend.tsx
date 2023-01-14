@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { Axios, AxiosResponse } from "axios";
 import { LegacyRef, useContext, useEffect, useRef, useState } from "react";
 import { urlMessages } from "../apiPaths";
 import { profileDTO } from "../Profile/profiles.models";
@@ -72,7 +72,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
         setChatOpenedAlready(true);
       });
   }
-  async function sendMessage(image?: any) {
+  function sendMessage(image?: File[]) {
     setSendingMessage(true);
     var formData = new FormData();
     var date = new Date().toTimeString();
@@ -80,33 +80,45 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     const text = textDiv?.textContent;
     formData.append("SenderId", props.userProfile.id);
     formData.append("ReceiverId", props.friendProfile.id);
+    var messagesToGetCount = 1
     if (image) {
-      formData.append("ImageContent", image);
-    } else {
+      for (var i = 0; i != image.length; i++) {
+        formData.append("ImageContent", image[i]);
+      }
+      messagesToGetCount = (image.length >= 1 ? image.length : 1)
+    }
+    if (text){
       formData.append("TextContent", text!);
     }
     formData.append("Date", date);
-    console.log(image);
-    axios.post(`${urlMessages}/send`, formData);
+
+
+    axios.post(`${urlMessages}/send`, formData)
 
     setTimeout(() => {
       setSendingMessage(false);
       axios
         .get(
-          `${urlMessages}/getnewest/${props.userProfile.id}/${props.friendProfile.id}`
+          `${urlMessages}/getnewest/${props.userProfile.id}/${props.friendProfile.id}/${messagesToGetCount}`
         )
         .then((response) => {
-          setMessages([...messages, response.data[0]]);
+          var messes = [...messages]
+          response.data.forEach((message: any) => {
+            console.log(message)
+            messes.push(message)
+          });
+          setMessages(messes);
           setTextToSend('')
           setImages([])
-          setFileToData(undefined)
+          setFileToData([])
           textDiv!.innerHTML = "";
           setTimeout(() => {
             refScroll.current.scrollIntoView();
           }, 300);
         });
-    }, 2000);
+    }, 5000);
   }
+
 
   async function handleScroll() {
     var element = document.getElementById(
@@ -153,7 +165,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
       messageContainer?.setAttribute("contentEditable", "true");
       setImagesToSend(false);
     }
-    console.log(baseImage)
+    // console.log(baseImage)
     // console.log(imagesToSend);
   }, [images]);
   return (
@@ -242,6 +254,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
               type="submit"
               className="sendMessageBtn"
               onClick={() => {
+                // loadImages(fileToData)
                 sendMessage(fileToData);
               }}
             >
