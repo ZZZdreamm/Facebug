@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
 import Menu from "./Menu";
 import routes from "./route-config";
 import Login from "./auth/Login";
@@ -90,7 +90,7 @@ function App() {
     "pointer-events" + (modalNotOpened ? "-enabled" : "-disabled");
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AuthenticationContext.Provider value={{ claims, update: setClaims }}>
         <ProfileContext.Provider
           value={{ profileDTO, updateProfile: setProfileDTO }}
@@ -136,7 +136,7 @@ function App() {
           </ProfileFriendsContext.Provider>
         </ProfileContext.Provider>
       </AuthenticationContext.Provider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
