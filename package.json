@@ -1,6 +1,7 @@
 {
   "name": "reactproject",
   "version": "0.1.0",
+  "homepage": "https://ZZZdreamm.github.io/Facebug",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -25,6 +26,8 @@
     "yup": "^0.32.11"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -49,6 +52,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-bootstrap-typeahead": "^5.1.4"
+    "@types/react-bootstrap-typeahead": "^5.1.4",
+    "gh-pages": "^5.0.0"
   }
 }

@@ -270,7 +270,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
           {textToSend === "" && imagesToSend == false ? (
             <img
               className="sendLikeBtn"
-              src="/like.png"
+              src="/readyImages\public/like.png"
               onClick={() => sendMessage()}
             />
           ) : (

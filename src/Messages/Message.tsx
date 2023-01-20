@@ -60,14 +60,14 @@ export default function Message(props: messageProps) {
               className={messageStyle}
               style={{ backgroundColor: `${messageColor}` }}
             >
-              <img src="/deleteBin.png" className="deleteMessage" onClick={() => {
+              <img src="deleteBin.png" className="deleteMessage" onClick={() => {
                 deleteMessage(props.id)
               }}/>
               <span className="message-text">{props.message.textContent}</span>
             </div>
           ) : (
             <div className={messageStyle}>
-              <img src="/deleteBin.png" className="deleteMessage" onClick={() => {
+              <img src="deleteBin.png" className="deleteMessage" onClick={() => {
                 deleteMessage(props.id)
               }}/>
               <img
