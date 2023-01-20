@@ -131,7 +131,7 @@ export default function UserProfile() {
   }
   function chooseContent(id: number) {
     if (belowImageContentNumber === 1) {
-      setBelowImageContent(<PostsList posts={posts} />);
+      setBelowImageContent(<PostsList posts={posts}/>);
       return;
     }
     if (belowImageContentNumber === 2) {

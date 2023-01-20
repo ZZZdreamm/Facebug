@@ -3,24 +3,31 @@ import { LegacyRef, useContext, useEffect, useRef, useState } from "react";
 import { urlMessages } from "../apiPaths";
 import { profileDTO } from "../Profile/profiles.models";
 import Modal from "../Utilities/Modal";
-import ChatsOpenedContext from "./ChatsOpenedContext";
 import ListOfMessages from "./ListOfMessages";
 import { messageDTO } from "./messages.models";
 import ImageUploader from "../Utilities/ImageUploader";
 import { BaseSchema } from "yup";
 import * as ReactDOMServer from "react-dom/server";
 import UploadManyImages from "../Utilities/UploadManyImages";
+import MessagesContext from "./MessagesContext";
+import useIsInViewport from "../Utilities/IsInViewPort";
+
 
 export default function ChatWithFriend(props: chatWithFriendProps) {
   const [image, setImage] = useState<string>();
-  const [messages, setMessages] = useState<any>([]);
+  // const [messages, setMessages] = useState<any>([]);
+  const [messages, setMessages] = useState<any>([])
+
   const [sendingMessage, setSendingMessage] = useState(false);
-  const refScroll = useRef<any>(null);
+  const refScroll1 = useRef<any>(null);
+  const refScroll2 = useRef<any>(null);
   const [numberOfMessagesStacks, setNumberOfMessagesStacks] = useState(1);
   const [chatOpenedAlready, setChatOpenedAlready] = useState(false);
 
   const [textToSend, setTextToSend] = useState("");
   const [textingDivState, setTextingDivState] = useState<string>();
+
+  const [ifLongTextStyle, setIfLongTextStyle] = useState('')
 
   const {
     imageName,
@@ -39,6 +46,15 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
 
   const [imagesToSend, setImagesToSend] = useState(false);
 
+  useEffect(()=>{
+    if (textToSend != ''){
+      setIfLongTextStyle('longTextSendBtn')
+    }
+    else{
+      setIfLongTextStyle('')
+    }
+  },[textToSend])
+
   useEffect(() => {
     if (
       props.friendProfile.profileImage === "undefined" ||
@@ -54,12 +70,24 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
   useEffect(() => {
     getMessages();
   }, []);
+
+
   useEffect(() => {
-    if (refScroll.current == null) {
+    if (refScroll1.current == null) {
       return;
     }
-    refScroll.current.scrollIntoView();
-  }, [refScroll, chatOpenedAlready]);
+    refScroll1.current.scrollIntoView();
+  }, [refScroll1, chatOpenedAlready]);
+
+
+  // var scrolledChatUp = useIsInViewport(refScroll2);
+  // useEffect(() => {
+  //   window.onscroll = (e) => {
+  //     if (scrolledChatUp) {
+  //       getMessages();
+  //     }
+  //   };
+  // }, [scrolledChatUp]);
 
   async function getMessages() {
     await axios
@@ -113,7 +141,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
           setFileToData([])
           textDiv!.innerHTML = "";
           setTimeout(() => {
-            refScroll.current.scrollIntoView();
+            refScroll1.current.scrollIntoView();
           }, 300);
         });
     }, 5000);
@@ -127,8 +155,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     // console.log(messages.length)
     // console.log(numberOfMessagesStacks)
     if (
-      element!.scrollTop < element!.clientHeight &&
-      (numberOfMessagesStacks - 1) * 15 == messages.length
+      element!.scrollTop < element!.clientHeight
     ) {
       setNumberOfMessagesStacks(numberOfMessagesStacks + 1);
       getMessages();
@@ -169,7 +196,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     // console.log(imagesToSend);
   }, [images]);
   return (
-    <>
+    <MessagesContext.Provider value={{messages: messages, updateMessages: setMessages}}>
       <div className="chat">
         <div className="chat-header">
           <div>
@@ -201,7 +228,8 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
             userId={props.userProfile.id}
             friendId={props.friendProfile.id}
             friendProfileImage={image!}
-            refff={refScroll}
+            ref1={refScroll1}
+            ref2={refScroll2}
           />
         </div>
         <div className="chat-footer">
@@ -214,8 +242,6 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
               className='message-to-send'
               contentEditable
               onInput={(e) => {
-                // @ts-ignore
-                console.log(e.target.textContent);
                 // @ts-ignore
                 setTextToSend(e.target.textContent);
               }}
@@ -252,9 +278,8 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
               id="sendMessageButton"
               disabled={sendingMessage}
               type="submit"
-              className="sendMessageBtn"
+              className={`${ifLongTextStyle} sendMessageBtn`}
               onClick={() => {
-                // loadImages(fileToData)
                 sendMessage(fileToData);
               }}
             >
@@ -263,7 +288,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
           )}
         </div>
       </div>
-    </>
+      </MessagesContext.Provider>
   );
 }
 
@@ -274,3 +299,5 @@ interface chatWithFriendProps {
   openChats: any;
   setChatOpened: any;
 }
+
+

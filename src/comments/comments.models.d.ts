@@ -7,7 +7,6 @@ interface commentsDTO{
 }
 interface commentsCreationDTO{
     postId:number;
-    autorName:string;
+    autorId:string;
     textContent:string;
-    autorProfileImage:string;
 }

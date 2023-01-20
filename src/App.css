@@ -45,7 +45,7 @@
   display: flex;
   width: 100%;
   top:0;
-  z-index: 10;
+  z-index: 2;
   height:56px !important;
   justify-content: space-between;
   align-items: center;
@@ -71,7 +71,6 @@
 .myModal{
   width: 100%;
   height:100%;
-  background-color: gray;
   z-index: 10;
   border-radius: 10px;
 }
@@ -194,7 +193,7 @@
   font-size:26px;
 }
 .postForm:hover{
-  background-color: aquamarine;
+  background-color: rgb(53, 90, 78);
 }
 .postForm-container{
   gap:5px;
@@ -204,7 +203,7 @@
   height:150px;
   margin-bottom: 15px;
   margin-top: 15px;
-  background-color: aqua;
+  background-color: #ccccff;
   border-radius: 10px;
 }
 .postForm-image{
@@ -253,7 +252,6 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  min-height: 300px;
   background-color: lightblue;
   border-radius: 10px;
 }
@@ -411,13 +409,13 @@
 .fileUploader-container{
   background-color: white;
   cursor: pointer;
-  /* margin: 5px 10px; */
+  margin: 5px 10px;
   border-radius: 20px;
   display:  flex;
   align-items: center;
   justify-content: center;
   padding-left: 10px;
-
+  width: 100%;
 }
 .doYouWantToDiv{
   position:fixed;
@@ -707,7 +705,7 @@
 .showYourRequests{
   margin-top: 10px;
   cursor: pointer;
-  color: rgb(41, 194, 228);
+  color: rgb(165, 177, 180);
 }
 .exampleModal{
   position: fixed;
@@ -859,6 +857,7 @@ textarea{
   display: flex;
   flex-direction: row-reverse;
   column-gap: 15px;
+  z-index: 1;
 }
 .chat-header{
   display: flex;
@@ -918,9 +917,9 @@ textarea{
   cursor: pointer;
 }
 .sendMessageBtn{
-  position: absolute;
-  bottom: 6px;
-  right: 6%;
+  position: relative;
+  right: 15px;
+  top: 5px;
   border: none;
   height: 40px;
   width: 40px;
@@ -941,7 +940,9 @@ textarea{
   justify-content: left;
 }
 .my-message{
-  margin-left: 35%;
+  /* margin-left: 35%; */
+  /* display: flex;
+  justify-content: right; */
   min-width: 5%;
   max-width: 65%;
   border-radius: 20px;
@@ -954,6 +955,7 @@ textarea{
   max-width: 65%;
   border-radius: 20px;
   overflow-wrap: break-word;
+  padding: 5px;
 }
 
 .sendLikeBtn{
@@ -968,7 +970,6 @@ textarea{
 }
 .message-image{
   position: relative;
-  left: 40px;
   max-height: 300px;
   max-width: 150px;
   cursor: pointer;
@@ -1044,8 +1045,7 @@ textarea{
   height: 48px;
 }
 .image-message-to-send{
-  position: absolute;
-  left: 60px;
+  position: relative;
   bottom: 0;
   display: flex;
   flex-direction: column;
@@ -1065,4 +1065,31 @@ textarea{
 .message-to-send{
   min-width: 190px;
   max-width: 240px;
+}
+.deleteMessage{
+  height: 30px;
+  width: 30px;
+  position: relative;
+  top: 20%;
+  right: 40px;
+  cursor: pointer;
+}
+.deleteImageMessage{
+  height: 30px;
+  width: 30px;
+  position: relative;
+  top: 50%;
+  right: 40px;
+  cursor: pointer;
+}
+.messs{
+  display: flex;
+  justify-content: right;
+  object-fit: contain;
+  align-items: center;
+}
+.longTextSendBtn{
+  position: relative;
+  left: 83%;
+  bottom: 5px;
 }

@@ -14,7 +14,7 @@ function formatDate(date:Date){
         {value:day},
         {value:year}
     ] = format.formatToParts(date);
-    return `${year}.${month}.${day}`;   
+    return `${year}.${month}.${day}`;
 }
 
 export function convertPostToFormData(post:postCreationDTO){
@@ -25,20 +25,16 @@ export function convertPostToFormData(post:postCreationDTO){
     if(post.mediaFile){
         formData.append('mediaFile', post.mediaFile);
     }
-   
+
     return formData;
 }
 
 export function convertCommentToFormData(comment:commentsCreationDTO){
     const formData = new FormData();
-    formData.append('autorName',comment.autorName);
+    formData.append('autorId',comment.autorId);
     formData.append('textContent',comment.textContent)
     formData.append('postId',comment.postId.toString())
 
-    if(comment.autorProfileImage){
-        formData.append('autorProfileImage', comment.autorProfileImage);
-    }
-   
     return formData;
 }
 
@@ -52,6 +48,6 @@ export function convertProfileToFormData(profile:profileImageCreationDTO){
     if(profile.profileImage){
         formData.append('profileImage', profile.profileImage);
     }
-   
+
     return formData;
 }

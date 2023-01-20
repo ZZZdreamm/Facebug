@@ -1,11 +1,12 @@
 import axios, { AxiosResponse } from "axios";
-import { ReactElement, useContext, useEffect, useState } from "react";
+import { ReactElement, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { urlPosts } from "./apiPaths";
 import Authorized from "./auth/Authorized";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import ListOfContacts from "./Friends/ListOfContacts";
+import { OpenedChatssContext } from "./Messages/ChatsOpenedContext";
 import ChatWithFriend from "./Messages/ChatWithFriend";
 import PostContainer from "./Posts/PostContainer";
 import PostForm from "./Posts/PostForm";
@@ -15,25 +16,49 @@ import ProfileContext, {
 } from "./Profile/ProfileContext";
 import Button from "./Utilities/Button";
 import GenericList from "./Utilities/GenericList";
+import useIsInViewPort from "./Utilities/IsInViewPort";
 
 export default function LandingPage() {
   const [posts, setPosts] = useState<postDTO[]>();
   const { profileDTO } = useContext(ProfileContext);
   const { profileFriends } = useContext(ProfileFriendsContext);
 
-  const [openedChats, setOpenedChats] = useState<[]>([]);
+  const { openedChats, updateChatsOpened } = useContext(OpenedChatssContext);
 
   const navigate = useNavigate();
+  const [currentAmountOfMessages, setCurrentAmountOfMessages] = useState(1);
+
+  const refPosts = useRef<any>(null);
 
   useEffect(() => {
-    loadData();
+    getMorePosts();
   }, []);
 
-  function loadData() {
-    axios.get(`${urlPosts}/all`).then((response: AxiosResponse<postDTO[]>) => {
-      setPosts(response.data);
-    });
+  var scrolledPageBottom = useIsInViewPort(refPosts);
+  useEffect(() => {
+    window.onscroll = (e) => {
+      if (scrolledPageBottom) {
+        setCurrentAmountOfMessages(currentAmountOfMessages + 1);
+        getMorePosts();
+      }
+    };
+  }, [scrolledPageBottom]);
+
+  function getMorePosts() {
+    axios
+      .get(`${urlPosts}/getMore/${currentAmountOfMessages}`)
+      .then((response: AxiosResponse<postDTO[]>) => {
+        setPosts(response.data);
+      });
+    console.log("polak");
   }
+  // function handleScroll() {
+  //   if (window!.scrollY < elementtt!.clientHeight && (currentAmountOfMessages) * 10 == posts!.length) {
+  //     setCurrentAmountOfMessages(currentAmountOfMessages + 1);
+  //     getMorePosts();
+  //   }
+  //   console.log('polak')
+  // }
 
   return (
     <>
@@ -48,6 +73,7 @@ export default function LandingPage() {
               }}
               imageURL={""}
             />
+
 
             <div className="events-friends-etc">
               <span
@@ -81,37 +107,26 @@ export default function LandingPage() {
               </span>
               <ListOfContacts
                 friends={profileFriends}
-                setCurrentOpenChats={setOpenedChats}
+                setCurrentOpenChats={updateChatsOpened}
                 openChats={openedChats}
               />
-            </div>
-            <div className="listOfOpenedChats">
-              {openedChats.map(
-                ({ key, userProfile, friendProfile, setChatOpened }) => (
-                  <ChatWithFriend
-                    key={key}
-                    userProfile={userProfile}
-                    friendProfile={friendProfile}
-                    setOpenedChats={setOpenedChats}
-                    openChats={openedChats}
-                    setChatOpened={setChatOpened}
-                  />
-                )
-              )}
             </div>
           </>
         }
       />
 
-      {posts ? (
-        <div className="allPosts">
-          <PostsList posts={posts} />
-        </div>
-      ) : (
-        <div className="postsList">
-          <PostsList posts={posts} />
-        </div>
-      )}
+      <div>
+        {posts ? (
+          <div className="allPosts">
+            <PostsList posts={posts} />
+          </div>
+        ) : (
+          <div className="postsList">
+            <PostsList posts={posts} />
+          </div>
+        )}
+        <span ref={refPosts}></span>
+      </div>
     </>
   );
 }

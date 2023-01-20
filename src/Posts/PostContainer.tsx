@@ -175,9 +175,7 @@ export default function PostContainer(props: postDTO) {
             <Formik
               initialValues={{
                 postId: props.id,
-                autorName: "Kacper Multan",
-                autorProfileImage:
-                  "https://localhost:7064/profiles/profile-image.jpg",
+                autorId:profileDTO.id,
                 textContent: text,
               }}
               onSubmit={(values) => {

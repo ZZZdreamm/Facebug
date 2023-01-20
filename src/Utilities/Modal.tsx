@@ -1,4 +1,5 @@
 import { ReactElement, useContext, useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 import ProfileContext from "../Profile/ProfileContext";
 import ModalOpenedContext from "./ModalOpenedContext";
 
@@ -26,13 +27,16 @@ export default function Modal(props: modalProps) {
   var overlay = modalNotOpened ? "overlay" : "overlayDisplayed";
   return (
     <>
+       <Portal>
       <div id={overlay}></div>
+      </Portal>
       {props.modalDisplayer}
-      <div
+      {/* <div
         className={modalClassName}
         style={{ display: `${visibleModal}`, pointerEvents: "auto" }}
-      >
-        <div className="exampleModal">
+      > */}
+         <Portal>
+        <div className="exampleModal" style={{ display: `${visibleModal}`, pointerEvents: "auto" }}>
           <div className="modal-headerr">
             {props.header}
             {/* <img src="/X Button.png" className="closeModal" onClick={hideModal}/> */}
@@ -42,11 +46,20 @@ export default function Modal(props: modalProps) {
             {props.footer}
           </div> : null}
         </div>
-      </div>
+      </Portal>
+      {/* </div> */}
     </>
   );
 }
 
+function Portal({children}:any){
+  if (typeof document == 'undefined'){
+    return <>{children}</>
+  }
+  return(
+    ReactDOM.createPortal(children, document.body)
+  )
+}
 interface modalProps {
   body: ReactElement;
   header?:ReactElement;

@@ -1,5 +1,4 @@
 import { Dispatch, JSXElementConstructor, ReactElement, SetStateAction, useContext, useEffect, useState } from "react";
-import ChatsOpenedContext from "../Messages/ChatsOpenedContext";
 import ChatWithFriend from "../Messages/ChatWithFriend";
 import ProfileContext from "../Profile/ProfileContext";
 import { profileDTO } from "../Profile/profiles.models";
@@ -16,10 +15,10 @@ export default function Contact(props:contactProps){
           return
         }
         setImage(props.profile.profileImage)
-      
+
       },[props.profile.profileImage])
 
-    return( 
+    return(
         <>
             <div className="contact-friend" onClick={()=>{
                 if(chatOpened== false){
@@ -36,7 +35,7 @@ export default function Contact(props:contactProps){
                     // console.log(chats)
                     // chat?.scrollTo(0,chat.scrollHeight)
                 }
-            
+
             }}>
                 <img className="contact-friend-image" src={image}/>
                 <span className="contact-friend-name">{props.profile.email}</span>

@@ -22,7 +22,8 @@ import axios, { AxiosResponse } from "axios";
 import { urlAccounts, urlFriends, urlPosts } from "./apiPaths";
 import ModalOpenedContext from "./Utilities/ModalOpenedContext";
 import { friendRequest } from "./Friends/friends.models";
-import ChatsOpenedContext from "./Messages/ChatsOpenedContext";
+import {ChatsOpenedContext, OpenedChatssContext } from "./Messages/ChatsOpenedContext";
+import OpenedChats from "./Messages/OpenedChats";
 
 configureInterceptor();
 
@@ -41,6 +42,8 @@ function App() {
   const [modalNotOpened, setModalNotOpened] = useState<boolean>(true);
 
   const [amountOfChatsOpened,setAmountOfChatsOpened] = useState(0)
+
+  const [openedChats, setOpenedChats] = useState([])
 
   useEffect(() => {
     setClaims(getClaims());
@@ -74,7 +77,7 @@ function App() {
       });
     }
   }, [profileDTO]);
-  
+
   function isAdmin() {
     return (
       claims.findIndex(
@@ -108,6 +111,8 @@ function App() {
                   }}
                 >
                   <ChatsOpenedContext.Provider value={{amountOfChatsOpened,updateAmountOfChatsOpened: setAmountOfChatsOpened}}>
+                    {/* @ts-ignore */}
+                    <OpenedChatssContext.Provider value={{openedChats:openedChats, updateChatsOpened:setOpenedChats}}>
                   <div className={className}>
                     <div className="wrapper">
                       <Menu></Menu>
@@ -120,8 +125,10 @@ function App() {
                           />
                         ))}
                       </Routes>
+                      <OpenedChats openedChats={openedChats} updateChatsOpened={setOpenedChats} />
                     </div>
                   </div>
+                  </OpenedChatssContext.Provider>
                   </ChatsOpenedContext.Provider>
                 </ModalOpenedContext.Provider>
               </ProfileFriendRequestsContext.Provider>
