@@ -8,13 +8,13 @@ export default function FriendCard(props:profileDTO){
     useEffect(()=>{
         if(props.profileImage === "undefined" || props.profileImage === "null" || props.profileImage === undefined || props.profileImage === null)
         {
-          setImage("/noProfile.jpg")
+          setImage("https://localhost:7064/public/noProfile.jpg")
           return
         }
         setImage(props.profileImage)
-      
+
       },[props.profileImage])
-    
+
     return(
         <>
             <div className="friendCard" onClick={()=>{

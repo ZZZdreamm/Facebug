@@ -126,6 +126,7 @@ export default function UserProfile() {
       method: "GET",
       url: `${urlFriends}/userFriends/${email}`,
     }).then((response: AxiosResponse<profileDTO[]>) => {
+      // var friendss = response.data.filter((friend) => friend.id != profileDTO.id)
       setFriends(response.data);
     });
   }
@@ -140,14 +141,6 @@ export default function UserProfile() {
       );
       return;
     }
-    // if (belowImageContentNumber === 3) {
-    //   setBelowImageContent(<>CHUJ3</>);
-    //   return;
-    // }
-    // if (belowImageContentNumber === 4) {
-    //   setBelowImageContent(<>CHUJ4</>);
-    //   return;
-    // }
   }
 
   function showImage() {}
@@ -177,12 +170,14 @@ export default function UserProfile() {
     axios.post(
       `${urlFriends}/sendFriendRequest/${profileDTO.id}/${userProfile?.id}`
     );
+    setNotInMySentFriendRequests(false)
   }
 
   function cancelSentRequest() {
     axios.delete(
       `${urlFriends}/cancelSentRequest/${profileDTO.id}/${userProfile?.id}`
     );
+    setNotInMySentFriendRequests(true)
   }
 
   const [loading, setLoading] = useState(true);
@@ -217,6 +212,10 @@ export default function UserProfile() {
       <FriendsList friends={friends} deleteFriend={deleteFriend} />
     );
   }
+  // useEffect(()=>{
+  //   console.log(friends);
+  //   console.log(userProfile)
+  // },[friends])
   return (
     <>
       <div className="profile-container">

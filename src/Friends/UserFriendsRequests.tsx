@@ -50,7 +50,6 @@ export default function UserFriendsRequests() {
                 className="showYourRequests"
                 onClick={() => {
                   setDisplayModal(displayModal + 1);
-                  console.log("oaksd");
                 }}
               >
                 Show your sent requests
@@ -82,7 +81,9 @@ export default function UserFriendsRequests() {
           />
         </div>
       </div>
-      <FriendRequestsList friendRequests={friendRequests} />
+      <div>
+        <FriendRequestsList friendRequests={friendRequests} />
+      </div>
     </>
   );
 }

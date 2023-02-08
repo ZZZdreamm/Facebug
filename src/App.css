@@ -178,11 +178,10 @@
   font-size: 20px;
   border-radius: 25px;
   width: 80%;
-  height: 50px;
+  height: 60px;
+  padding: 5px;
   background-color:aliceblue;
   cursor: pointer;
-
-
 }
 .notVisible{
   display: none;
@@ -242,6 +241,7 @@
   flex-grow: 1;
   margin: 0px 14px;
   height: 60%;
+  padding: 0px 8px;
   background-color: white;
   overflow-wrap: break-word;
   inline-size: calc(100% - 28px);
@@ -254,6 +254,7 @@
   flex-direction: column;
   background-color: lightblue;
   border-radius: 10px;
+  padding: 7px 0px;
 }
 .postsList{
   position: relative;
@@ -405,17 +406,22 @@
   justify-content: center;
   background-color: white;
   margin: 10px 20px;
+  padding-top: 10px;
+  padding-left: 5px;
 }
-.fileUploader-container{
+.fileUploader-container {
   background-color: white;
   cursor: pointer;
   margin: 5px 10px;
-  border-radius: 20px;
-  display:  flex;
+  border-radius: 10px;
+  display: flex;
+  padding-left: 3px;
   align-items: center;
   justify-content: center;
-  padding-left: 10px;
   width: 100%;
+  position: relative;
+  right: 5px;
+  bottom: 7px;
 }
 .doYouWantToDiv{
   position:fixed;
@@ -527,7 +533,6 @@
   bottom: 0;
   background-color: rgba(0,0,0,0.5); /* Black background with opacity */
   z-index: 11; /* Specify a stack order in case you're using a different order for other elements */
-  cursor: pointer; /* Add a pointer on hover */
 }
 #overlayDisplayed {
   position: fixed; /* Sit on top of the page content */
@@ -539,8 +544,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(105, 103, 103, 0.5); /* Black background with opacity */
-  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
-  cursor: pointer; /* Add a pointer on hover */
+  z-index: 3; /* Specify a stack order in case you're using a different order for other elements */
 }
 .events-friends-etc{
   position: fixed;
@@ -608,7 +612,7 @@
 
 .friendCard{
   width: 26vh;
-  height: 400px;
+  height: 43vh;
   background-color: #bbb;
   margin-top: 30px;
   cursor: pointer;
@@ -617,8 +621,9 @@
   width: 100%;
   height: 50%;
 }
-.friendCard-text{
-  overflow-wrap: break-word;
+.friendCard-text {
+  display: flex;
+  flex-wrap: wrap;
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -633,6 +638,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink:1
 }
 .listOfFriendRequests{
   display: flex;
@@ -640,12 +646,12 @@
   margin-left: 400px;;
 }
 .friendRequest-image{
-  height: 100px;
+  height: 80%;
   width: 100px;
 }
 .friendRequest-name{
   margin-left: 20px;
-  font-size: 30px;
+  font-size: 27px;
 }
 .friendRequest-accept{
   font-size: 25px;
@@ -712,9 +718,10 @@
   left: 64vh;
   top:12vh;
   z-index: 10;
-  width: 570px;
+  min-width: 570px;
   min-height: 500px;
-  max-height: 600px;
+  max-height: 800px;
+  max-width: 570px;
   background-color: rgb(243, 235, 235);
 }
 .requestsModalBody{
@@ -883,6 +890,7 @@ textarea{
   margin-right: 10px;
 }
 .chat-footer{
+  position: relative;
   display: flex;
   min-height: 14%;
   width: 100%;
@@ -891,8 +899,7 @@ textarea{
 .chat-footer-text{
   display: flex;
   position: relative;
-  right: 0;
-  /* flex-direction: column-reverse; */
+  left: 10px;
   border-radius: 20px;
   background-color: white;
   min-width: 200px;
@@ -985,7 +992,7 @@ textarea{
 }
 .long-message-text{
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
   display: flex;
   flex-direction: column-reverse;
   border-radius: 20px;
@@ -1017,7 +1024,7 @@ textarea{
 }
 .closeImage{
   position: absolute;
-  right: 0px;
+  right: -5px;
   top: 0px;
   height: 10px;
   width: 10px;
@@ -1041,12 +1048,13 @@ textarea{
   right: 5px;
 }
 .uploader{
-  width: 40px;
+  width: 45px;
   height: 48px;
 }
 .image-message-to-send{
-  position: relative;
-  bottom: 0;
+  position: absolute;
+  bottom: 5px;
+  left: 70px;
   display: flex;
   flex-direction: column;
   /* flex-wrap: wrap; */
@@ -1092,4 +1100,36 @@ textarea{
   position: relative;
   left: 83%;
   bottom: 5px;
+}
+.deleteMessageModal{
+  position: fixed;
+  bottom: 45%;
+  right: 40%;
+  height: 100px;
+  width: 360px;
+  background-color: wheat;
+  z-index: 10;
+}
+.messageBtn{
+  width: 40%;
+  margin: 0 16px;
+}
+.contactModal{
+  position: fixed;
+  bottom: 35%;
+  right: 1%;
+  height: 45%;
+  width: 380px;
+  background-color: whitesmoke;
+  z-index: 10;
+}
+.contact-header{
+  width: 100%;
+  height: 15%;
+}
+.tooMuchWordsAlert{
+  color: red;
+  position: absolute;
+  top: -150px;
+  z-index: 5;
 }

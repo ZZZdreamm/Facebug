@@ -19,7 +19,7 @@ export default function ImageUploader(props: imageUploaderProps) {
   useEffect(()=> {
     if(props.image === "undefined" || props.image === "null")
     {
-      setBaseImage("/noProfile.jpg")
+      setBaseImage("https://localhost:7064/public/noProfile.jpg")
       return
     }
     setBaseImage(props.image)

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ReactElement, useContext, useState } from "react";
 import { urlMessages } from "../apiPaths";
+import DeleteMessageModal from "./DeleteMessageModal";
 import { messageDTO } from "./messages.models";
 import MessagesContext from "./MessagesContext";
 
@@ -16,6 +17,8 @@ export default function Message(props: messageProps) {
   const [bigImage, setBigImage] = useState<ReactElement>();
   const {messages, updateMessages} = useContext(MessagesContext)
 
+  const [deleteModal, setDeleteModal] = useState<any>()
+
   function showImageAsGreater(image: string) {
     var img = (
       <div className="bigImageContainer" style={{ pointerEvents: "auto" }}>
@@ -25,7 +28,7 @@ export default function Message(props: messageProps) {
           onClick={() => console.log("SDSD")}
         />
         <img
-          src="/red X.png"
+          src="https://localhost:7064/public/red X.png"
           className="closeBigImage"
           style={{ marginLeft: "5px", cursor: "pointer" }}
           onClick={() => setShowImage(false)}
@@ -46,10 +49,20 @@ export default function Message(props: messageProps) {
     // console.log(messes)
     updateMessages(messes)
   }
+  let displayCount = 1
+  const openDeleteModal = (messageId:number) => {
+    displayCount = 1
+    setDeleteModal(<DeleteMessageModal id={messageId} doDisplay={displayCount} deleteMessage={deleteMessage}  closeModal={closeModal}/>)
+    displayCount = 0
+  }
+  const closeModal = () => {
+    setDeleteModal(null)
+  }
 
   var overlay = showImage ? "overlayDisplayed" : "overlay";
   return (
     <>
+      {deleteModal}
       {showImage ? <div id={overlay}></div> : null}
         <div className={`${fromFriend}`}>
           {props.fromMeMessage == false ? (
@@ -60,15 +73,15 @@ export default function Message(props: messageProps) {
               className={messageStyle}
               style={{ backgroundColor: `${messageColor}` }}
             >
-              <img src="deleteBin.png" className="deleteMessage" onClick={() => {
-                deleteMessage(props.id)
+              <img src="https://localhost:7064/public/deleteBin.png" className="deleteMessage" onClick={() => {
+                openDeleteModal(props.id)
               }}/>
               <span className="message-text">{props.message.textContent}</span>
             </div>
           ) : (
             <div className={messageStyle}>
-              <img src="deleteBin.png" className="deleteMessage" onClick={() => {
-                deleteMessage(props.id)
+              <img src="https://localhost:7064/public/deleteBin.png" className="deleteMessage" onClick={() => {
+                openDeleteModal(props.id)
               }}/>
               <img
                 className="message-image"

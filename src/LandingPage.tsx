@@ -8,6 +8,7 @@ import Register from "./auth/Register";
 import ListOfContacts from "./Friends/ListOfContacts";
 import { OpenedChatssContext } from "./Messages/ChatsOpenedContext";
 import ChatWithFriend from "./Messages/ChatWithFriend";
+import ContactModal from "./Messages/ContactModal";
 import PostContainer from "./Posts/PostContainer";
 import PostForm from "./Posts/PostForm";
 import PostsList from "./Posts/PostsList";
@@ -29,19 +30,20 @@ export default function LandingPage() {
   const [currentAmountOfMessages, setCurrentAmountOfMessages] = useState(1);
 
   const refPosts = useRef<any>(null);
+  const [deleteModal, setDeleteModal] = useState<any>()
 
   useEffect(() => {
     getMorePosts();
   }, []);
 
-  var scrolledPageBottom = useIsInViewPort(refPosts);
+  var scrolledPageBottom = useIsInViewPort(refPosts, '1000px');
   useEffect(() => {
-    window.onscroll = (e) => {
+    // window.onscroll = (e) => {
       if (scrolledPageBottom) {
         setCurrentAmountOfMessages(currentAmountOfMessages + 1);
         getMorePosts();
       }
-    };
+    // };
   }, [scrolledPageBottom]);
 
   function getMorePosts() {
@@ -52,13 +54,17 @@ export default function LandingPage() {
       });
     console.log("polak");
   }
-  // function handleScroll() {
-  //   if (window!.scrollY < elementtt!.clientHeight && (currentAmountOfMessages) * 10 == posts!.length) {
-  //     setCurrentAmountOfMessages(currentAmountOfMessages + 1);
-  //     getMorePosts();
-  //   }
-  //   console.log('polak')
-  // }
+
+  const [displayCount, setDisplayCount] = useState(0)
+  const openDeleteModal = () => {
+    setDisplayCount(1)
+    // setDeleteModal(<ContactModal doDisplay={displayCount} closeModal={closeModal}/>)
+    // displayCount = 0
+    console.log("sdsdsd");
+  }
+  const closeModal = () => {
+    setDeleteModal(null)
+  }
 
   return (
     <>
@@ -69,7 +75,6 @@ export default function LandingPage() {
               model={{
                 autorName: `${profileDTO.email}`,
                 textContent: "",
-                autorProfileImage: `${profileDTO.profileImage}`,
               }}
               imageURL={""}
             />
@@ -95,7 +100,7 @@ export default function LandingPage() {
                   navigate(`/friends/${profileDTO.email}`);
                 }}
               >
-                <img className="event-image" src="/friends.png" />
+                <img className="event-image" src="https://localhost:7064/public/friends.png" />
                 <Button className="custom-eventsBtn">Friends</Button>
               </span>
             </div>
@@ -103,7 +108,11 @@ export default function LandingPage() {
             <div className="rightBar">
               <span className="contacts">
                 Contacts
-                <img className="contacts-search" src="/search.png" />
+                <img className="contacts-search" src="https://localhost:7064/public/search.png" onClick={()=> {
+                  openDeleteModal()
+                }}/>
+                <ContactModal doDisplay={displayCount} setDisplay={setDisplayCount} closeModal={closeModal}/>
+                {/* {deleteModal} */}
               </span>
               <ListOfContacts
                 friends={profileFriends}

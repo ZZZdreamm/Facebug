@@ -24,7 +24,7 @@ export default function Menu() {
       {/* <div className="container-fluid"> */}
         <NavLink className="navbar-brand" to="/">
           <span style={{ display: "flex" }}>
-            <img className="App-logo" src="/logo.jpg" alt="SocStor"></img>
+            <img className="App-logo" src="https://localhost:7064/public/logo.jpg" alt="SocStor"/>
           </span>
         </NavLink>
         <Authorized
@@ -32,7 +32,7 @@ export default function Menu() {
             <>
               <SearchTypeahead profiles={[]} />
               {/* <form className="searchForm">
-               
+
                 <input
                   className="form-control"
                   type="search"

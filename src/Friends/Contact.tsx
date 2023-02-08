@@ -11,7 +11,7 @@ export default function Contact(props:contactProps){
     useEffect(()=>{
         if(props.profile.profileImage === "undefined" || props.profile.profileImage === "null" || props.profile.profileImage === undefined || props.profile.profileImage === null)
         {
-          setImage("/noProfile.jpg")
+          setImage("https://localhost:7064/public/noProfile.jpg")
           return
         }
         setImage(props.profile.profileImage)
@@ -26,14 +26,6 @@ export default function Contact(props:contactProps){
                     props.setOpenedChats([...props.openChats,
                         {key:props.profile.id,userProfile:profileDTO,friendProfile:props.profile,
                              setChatOpened:setChatOpened}])
-                    // console.log(props.profile.id)
-                    // var chats = document.getElementsByClassName("chat-body")
-                    // var chat = document.getElementById("modal-body-")
-                    // var chatetrs = document.querySelector(".chat-body")
-                    // console.log(chatetrs)
-                    // console.log(chat)
-                    // console.log(chats)
-                    // chat?.scrollTo(0,chat.scrollHeight)
                 }
 
             }}>

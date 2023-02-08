@@ -7,6 +7,8 @@ import Comment from "../comments/Comment";
 import ProfileContext from "../Profile/ProfileContext";
 import Button from "../Utilities/Button";
 import { convertCommentToFormData } from "../Utilities/FormDataUtils";
+import useDebounce from "../Utilities/useDebounce";
+import useEffectAfterSecondRender from "../Utilities/useEffectAfterSecondRender";
 import UserImage from "../Utilities/UserImage";
 
 export default function PostContainer(props: postDTO) {
@@ -32,6 +34,10 @@ export default function PostContainer(props: postDTO) {
   const [isImage, setIsImage] = useState(false);
 
   const [userLiked, setUserLiked] = useState<boolean>(false);
+
+  const debouncedAmountOfLikes = useDebounce(amountOfLikes, 2000);
+  const [clicked, setClicked] = useState(false);
+
   useEffect(() => {
     if (props.textContent.length > 180) {
       setTextOverflown(true);
@@ -41,20 +47,20 @@ export default function PostContainer(props: postDTO) {
       setIsImage(true);
     }
     axios
-    .get(`${urlPosts}/userLiked/${props.id}/${profileDTO.id}`)
-    .then((response: AxiosResponse<boolean>) => {
-      setUserLiked(response.data);
-    });
-  },[]);
+      .get(`${urlPosts}/userLiked/${props.id}/${profileDTO.id}`)
+      .then((response: AxiosResponse<boolean>) => {
+        setUserLiked(response.data);
+      });
+  }, []);
 
-  useEffect(()=>{
-    axios
-    .get(`${urlComments}/${props.id}`)
-    .then((response: AxiosResponse<commentsDTO[]>) => {
-      const coms = response.data;
-      setComments(coms);
-    });
-  },[comments])
+  // useEffect(() => {
+  //   axios
+  //     .get(`${urlComments}/${props.id}`)
+  //     .then((response: AxiosResponse<commentsDTO[]>) => {
+  //       const coms = response.data;
+  //       setComments(coms);
+  //     });
+  // }, [comments]);
 
   function showMoreText() {
     setExists(false);
@@ -62,27 +68,18 @@ export default function PostContainer(props: postDTO) {
     setIsClicked(true);
   }
 
-  async function likePost(id: number) {
-    axios.put(`${urlPosts}/likes/${id}/${profileDTO.id}`).then(() => {
-      axios
-        .get(`${urlPosts}/userLiked/${id}/${profileDTO.id}`)
-        .then((response: AxiosResponse<boolean>) => {
-          setUserLiked(response.data);
-        });
-      setAmountOfLikes(amountOfLikes + 1);
-    });
+  function likePost(id: number) {
+    if (userLiked) {
+      axios.put(`${urlPosts}/likes/${id}/${profileDTO.id}`);
+    } else {
+      axios.delete(`${urlPosts}/likes/${id}/${profileDTO.id}`);
+    }
   }
-
-  async function deleteLike(id: number) {
-    axios.delete(`${urlPosts}/likes/${id}/${profileDTO.id}`).then(() => {
-      axios
-        .get(`${urlPosts}/userLiked/${id}/${profileDTO.id}`)
-        .then((response: AxiosResponse<boolean>) => {
-          setUserLiked(response.data);
-        });
-      setAmountOfLikes(amountOfLikes - 1);
-    });
-  }
+  useEffect(() => {
+    if (clicked) {
+      likePost(props.id);
+    }
+  }, [debouncedAmountOfLikes]);
 
   async function commentPost(comment: commentsCreationDTO) {
     const formData = convertCommentToFormData(comment);
@@ -92,22 +89,27 @@ export default function PostContainer(props: postDTO) {
       data: formData,
       headers: { "Content-Type": "multipart/form-data" },
     });
-    setText('')
+    setText("");
     setAmountOfComments(amountOfComments + 1);
   }
 
   function showComments(id: number) {
-    axios
-      .get(`${urlComments}/${id}`)
-      .then((response: AxiosResponse<commentsDTO[]>) => {
-        setCommentsOpened(true);
-        const coms = response.data;
-        setComments(coms);
-        if (coms.length > 3) {
-          setTooMuchComments(true);
-          setPartOfComments(coms.slice(0, 3));
-        }
-      });
+    console.log(comments)
+    if (comments.length == 0) {
+      axios
+        .get(`${urlComments}/${id}`)
+        .then((response: AxiosResponse<commentsDTO[]>) => {
+          const coms = response.data;
+          setComments(coms);
+          setCommentsOpened(true);
+          if (coms.length > 3) {
+            setTooMuchComments(true);
+            setPartOfComments(coms.slice(0, 3));
+          }
+        });
+    } else {
+      setCommentsOpened(true);
+    }
   }
 
   function showMoreComments() {
@@ -149,24 +151,63 @@ export default function PostContainer(props: postDTO) {
 
         <div className="postContainer-post-footer">
           <span>
-            <img className="likeImage" src="/like.png" />
+            <img
+              className="likeImage"
+              src="https://localhost:7064/public/like.png"
+            />
             {amountOfLikes}
           </span>
           {userLiked ? (
-            <button className="likeBtn" style={{ backgroundColor: "#6495ed" }} onClick={() => deleteLike(props.id)}>
+            <button
+              className="likeBtn"
+              style={{ backgroundColor: "#6495ed" }}
+              onClick={() => {
+                setAmountOfLikes(amountOfLikes - 1);
+                setUserLiked(false);
+                setClicked(true);
+                setTimeout(() => {
+                  setClicked(false);
+                }, 10000);
+              }}
+            >
               Like
             </button>
           ) : (
-            <button className="likeBtn" onClick={() => likePost(props.id)}>
+            <button
+              className="likeBtn"
+              onClick={() => {
+                setAmountOfLikes(amountOfLikes + 1);
+                setUserLiked(true);
+                setClicked(true);
+                setTimeout(() => {
+                  setClicked(false);
+                }, 10000);
+              }}
+            >
               Like
             </button>
           )}
 
           <span>
-            <img className="messageImage" src="/message.png" />
-            {amountOfComments}
+            <img
+              className="messageImage"
+              src="https://localhost:7064/public/message.png"
+              style={{ marginRight: "20px" }}
+            />
+
           </span>
-          <button className="commentBtn" onClick={() => showComments(props.id)}>
+          <span style={{ marginTop: "7px" }}>{amountOfComments}</span>
+          <button
+            className="commentBtn"
+            style={{ marginLeft: "17px" }}
+            onClick={() => {
+              if (commentsOpened == false) {
+                showComments(props.id);
+              } else {
+                setCommentsOpened(false);
+              }
+            }}
+          >
             Comment
           </button>
         </div>
@@ -175,7 +216,7 @@ export default function PostContainer(props: postDTO) {
             <Formik
               initialValues={{
                 postId: props.id,
-                autorId:profileDTO.id,
+                autorId: profileDTO.id,
                 textContent: text,
               }}
               onSubmit={(values) => {
@@ -191,7 +232,9 @@ export default function PostContainer(props: postDTO) {
                   className="mt-2 ml-2 postContent"
                   onChange={(e) => setText(e.target.value)}
                 ></textarea>
-                <button className="submitCommentBtn" type="submit">Comment</button>
+                <button className="submitCommentBtn" type="submit">
+                  Comment
+                </button>
               </Form>
             </Formik>
             <div className="commentsArea">

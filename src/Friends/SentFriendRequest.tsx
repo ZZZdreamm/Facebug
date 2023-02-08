@@ -1,14 +1,14 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { urlFriends } from "../apiPaths";
+import { ReadyImagesURL, urlFriends } from "../apiPaths";
 import ProfileContext from "../Profile/ProfileContext";
 import Button from "../Utilities/Button";
 import { friendRequest } from "./friends.models";
 
 export default function SentFriendRequest(props: friendRequest) {
   const [requestStyle,setRequestStyle] = useState("flex")
-  const [profileImage,setProfileImage] = useState("/noProfile.jpg")
-  useEffect(()=>{ 
+  const [profileImage,setProfileImage] = useState(`${ReadyImagesURL}/noProfile.jpg`)
+  useEffect(()=>{
     if(props.friendProfileImage != "null" && props.friendProfileImage != undefined){
       setProfileImage(props.friendProfileImage)
     }
@@ -18,7 +18,7 @@ export default function SentFriendRequest(props: friendRequest) {
     setRequestStyle("none")
   }
   return (
-    <> 
+    <>
       <div className="sentFriendRequest" style={{display:`${requestStyle}`}}>
         <div>
           <img className="sentFriendRequest-image" src={profileImage}></img>

@@ -1,6 +1,6 @@
 import axios, { Axios, AxiosResponse } from "axios";
 import { LegacyRef, useContext, useEffect, useRef, useState } from "react";
-import { urlMessages } from "../apiPaths";
+import { ReadyImagesURL, urlMessages } from "../apiPaths";
 import { profileDTO } from "../Profile/profiles.models";
 import Modal from "../Utilities/Modal";
 import ListOfMessages from "./ListOfMessages";
@@ -11,6 +11,7 @@ import * as ReactDOMServer from "react-dom/server";
 import UploadManyImages from "../Utilities/UploadManyImages";
 import MessagesContext from "./MessagesContext";
 import useIsInViewport from "../Utilities/IsInViewPort";
+import { number } from "yup/lib/locale";
 
 
 export default function ChatWithFriend(props: chatWithFriendProps) {
@@ -28,6 +29,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
   const [textingDivState, setTextingDivState] = useState<string>();
 
   const [ifLongTextStyle, setIfLongTextStyle] = useState('')
+  // const [tooMuchCharacters, setTooMuchCharacters] = useState('')
 
   const {
     imageName,
@@ -53,6 +55,9 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     else{
       setIfLongTextStyle('')
     }
+    // if (textToSend.length >= 250){
+    //   setTooMuchCharacters('Maximum message length is 250 characters!')
+    // }
   },[textToSend])
 
   useEffect(() => {
@@ -62,7 +67,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
       props.friendProfile.profileImage === undefined ||
       props.friendProfile.profileImage === null
     ) {
-      setImage("/noProfile.jpg");
+      setImage(`${ReadyImagesURL}/noProfile.jpg`);
       return;
     }
     setImage(props.friendProfile.profileImage);
@@ -80,14 +85,14 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
   }, [refScroll1, chatOpenedAlready]);
 
 
-  // var scrolledChatUp = useIsInViewport(refScroll2);
-  // useEffect(() => {
-  //   window.onscroll = (e) => {
-  //     if (scrolledChatUp) {
-  //       getMessages();
-  //     }
-  //   };
-  // }, [scrolledChatUp]);
+  var scrolledChatUp = useIsInViewport(refScroll2, '1000px');
+  useEffect(() => {
+      if (scrolledChatUp) {
+        setNumberOfMessagesStacks(numberOfMessagesStacks + 1);
+        getMessages();
+      }
+  }, [scrolledChatUp]);
+
 
   async function getMessages() {
     await axios
@@ -152,8 +157,6 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     var element = document.getElementById(
       "modal-body-" + `${props.friendProfile.id}`
     );
-    // console.log(messages.length)
-    // console.log(numberOfMessagesStacks)
     if (
       element!.scrollTop < element!.clientHeight
     ) {
@@ -192,8 +195,6 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
       messageContainer?.setAttribute("contentEditable", "true");
       setImagesToSend(false);
     }
-    // console.log(baseImage)
-    // console.log(imagesToSend);
   }, [images]);
   return (
     <MessagesContext.Provider value={{messages: messages, updateMessages: setMessages}}>
@@ -233,6 +234,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
           />
         </div>
         <div className="chat-footer">
+          {/* <span className="tooMuchWordsAlert">{tooMuchCharacters}</span> */}
           {textToSend == "" ? (
             <div className="uploader">{ImageUpload}</div>
           ) : null}
@@ -270,7 +272,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
           {textToSend === "" && imagesToSend == false ? (
             <img
               className="sendLikeBtn"
-              src="/readyImages\public/like.png"
+              src={`${ReadyImagesURL}/like.png`}
               onClick={() => sendMessage()}
             />
           ) : (
@@ -283,7 +285,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
                 sendMessage(fileToData);
               }}
             >
-              <img className="chat-footer-sendMessage" src="/sendBtn.png" />
+              <img className="chat-footer-sendMessage" src={`${ReadyImagesURL}/sendBtn.png `}/>
             </button>
           )}
         </div>

@@ -7,7 +7,7 @@ import { friendRequest } from "./friends.models";
 
 export default function FriendRequest(props: friendRequest) {
   const [requestStyle,setRequestStyle] = useState("flex")
-  const [profileImage,setProfileImage] = useState("/noProfile.jpg")
+  const [profileImage,setProfileImage] = useState("https://localhost:7064/public/noProfile.jpg")
   useEffect(()=>{
     if(props.senderProfileImage != "null" && props.senderProfileImage != undefined){
       setProfileImage(props.senderProfileImage)

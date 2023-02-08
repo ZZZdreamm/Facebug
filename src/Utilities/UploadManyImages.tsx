@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ReadyImagesURL } from "../apiPaths";
 import { imageModel } from "./images.models";
 
 export default function UploadManyImages(props: imageUploaderProps) {
@@ -74,7 +75,7 @@ export default function UploadManyImages(props: imageUploaderProps) {
     fileToData,
     baseImage,
     deleteImage: (
-      <img src="/red X.png" className="closeImage" style={{marginLeft:"5px", cursor:"pointer"}}
+      <img src={`${ReadyImagesURL}/red X.png`} className="closeImage" style={{marginLeft:"5px", cursor:"pointer"}}
              onClick={() => removeSendingImage()}/>
     ),
     ImageUpload: (

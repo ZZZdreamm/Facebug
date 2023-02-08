@@ -62,11 +62,10 @@ export default function PostForm(props: postFormProps) {
           <Formik
             initialValues={props.model}
             onSubmit={(values) => {
-              
+
               const text = textDiv?.textContent
               values.textContent = text!;
               values.mediaFile = fileToData;
-              values.autorProfileImage = profileDTO.profileImage;
               console.log(values);
               submitPost(values);
               textDiv!.innerHTML = ""
@@ -77,7 +76,7 @@ export default function PostForm(props: postFormProps) {
                 <div className="modal-body-autorData">
                   <img
                     className="profile-image"
-                    src={props.model.autorProfileImage}
+                    src={profileDTO.profileImage}
                     alt="profile"
                   />
                   <div className="profile-name">{props.model.autorName}</div>

@@ -17,7 +17,7 @@ export default function FriendsList(props: friendsListProps) {
               />
             ))
           : "There are no friends"}
-        
+
       </div>
     </GenericList>
   );

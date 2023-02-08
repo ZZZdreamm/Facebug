@@ -9,7 +9,7 @@ export default function SentFriendRequestsList(props: friendRequestsListProps) {
       list={props.friendRequests}
       emptyListUI={
         <>
-          <div className="noFriendRequests">If you get friend requests, you will see them there</div>
+          
         </>
       }
     >

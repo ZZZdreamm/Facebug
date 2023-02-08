@@ -31,10 +31,6 @@ export default function Modal(props: modalProps) {
       <div id={overlay}></div>
       </Portal>
       {props.modalDisplayer}
-      {/* <div
-        className={modalClassName}
-        style={{ display: `${visibleModal}`, pointerEvents: "auto" }}
-      > */}
          <Portal>
         <div className="exampleModal" style={{ display: `${visibleModal}`, pointerEvents: "auto" }}>
           <div className="modal-headerr">
@@ -47,12 +43,11 @@ export default function Modal(props: modalProps) {
           </div> : null}
         </div>
       </Portal>
-      {/* </div> */}
     </>
   );
 }
 
-function Portal({children}:any){
+export function Portal({children}:any){
   if (typeof document == 'undefined'){
     return <>{children}</>
   }

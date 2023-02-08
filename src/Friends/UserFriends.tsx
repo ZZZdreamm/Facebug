@@ -24,7 +24,7 @@ export default function UserFriends() {
             navigate(`/friends/${profileDTO.email}`);
           }}
         >
-          <img className="event-image" src="/friends.png" />
+          <img className="event-image" src="https://localhost:7064/public/friends.png" />
           <Button className="custom-eventsBtn">Main Page</Button>
         </span>
         <span
@@ -33,7 +33,7 @@ export default function UserFriends() {
             navigate(`/friends/${profileDTO.email}/requests`);
           }}
         >
-          <img className="event-image" src="/friends.png" />
+          <img className="event-image" src="https://localhost:7064/public/friends.png" />
           <Button className="custom-eventsBtn">Friends Requests</Button>
         </span>
       </div>

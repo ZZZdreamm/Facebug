@@ -7,7 +7,7 @@ export default function GoBackButton(){
     }
     return(
         <div className="goBackButton-container" onClick={goBack}>
-            <img src="/goBackArrow.png" className="goBackButton"/>
+            <img src="https://localhost:7064/public/goBackArrow.png" className="goBackButton"/>
             <h3>Go back</h3>
         </div>
     )
