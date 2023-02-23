@@ -160,6 +160,7 @@
   min-height: 400px;
   max-height: 600px;
   overflow-y: auto;
+  background-color: rgb(243, 235, 235);
 }
 .imgStyle{
   position: absolute;
@@ -245,6 +246,7 @@
   background-color: white;
   overflow-wrap: break-word;
   inline-size: calc(100% - 28px);
+  border-radius: 10px;
 }
 
 .postContainer{
@@ -277,7 +279,7 @@
   border: none;
 }
 .commentBtn{
-  margin-left: 10px;
+  margin-left: 17px;
   margin-top: 10px;
   margin-bottom: 15px;
   width: 30%;
@@ -304,6 +306,7 @@
   margin-top: 10px;
   height: 25px;
   width: 30px;
+  margin-right: 20px;
 }
 .commentsArea{
   display: flex;
@@ -401,7 +404,7 @@
   background-color: antiquewhite;
 }
 .fileUploader{
-  width: 460px;
+  /* width: 460px; */
   display: flex;
   justify-content: center;
   background-color: white;
@@ -453,7 +456,8 @@
   align-items: center;
 }
 .friendImage{
-  width: 10vh;
+  width: 120px;
+  height: 120px;
   cursor: pointer;
 }
 .friendSmallInfo{
@@ -474,6 +478,9 @@
 .moreOptionsImg:hover{
   border-radius: 50%;
   background-color: antiquewhite;
+}
+.friendsReq{
+  margin-left: 20px;
 }
 .moreOptionsAboutFriend{
   position: absolute;
@@ -548,12 +555,21 @@
 }
 .events-friends-etc{
   position: fixed;
-  left: 0;
+  background-color: rgb(189, 166, 166);
+  /* left: 0;
   padding-top: 20px;
   top: 56px;
   height: 100vh;
-  background-color: rgb(189, 166, 166);
-  width: 40vh;
+  width: 40vh; */
+}
+@media screen and (min-width: 500px) {
+  .events-friends-etc{
+    left: 0;
+    padding-top: 20px;
+    top: 56px;
+    height: 100vh;
+    width: 40vh;
+  }
 }
 .leftBar{
   position: fixed;
@@ -695,7 +711,7 @@
   margin:0 auto;
   font-size: 24px;
   height: 100vh;
-  width: 100vh;
+  width: 70%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -723,6 +739,7 @@
   max-height: 800px;
   max-width: 570px;
   background-color: rgb(243, 235, 235);
+  padding: 10px 0px;
 }
 .requestsModalBody{
   width: 100%;
@@ -772,7 +789,10 @@
 }
 .publish-button{
   margin: 0px 20px;
+  border-radius: 10px;
+  background-color: rgb(70, 108, 166);
 }
+
 textarea{
   border: none;;
   outline: none;
@@ -878,6 +898,7 @@ textarea{
   width: 40px;
   border-radius: 50%;
   margin: 5px;
+  cursor: pointer;
 }
 .chat-body{
   display: flex;
@@ -933,6 +954,9 @@ textarea{
   cursor: pointer;
   padding: 7px;
   background-color: wheat;
+}
+.searchTypeahead{
+  width: 200px;
 }
 .list-of-messages{
   display: flex;
@@ -1082,6 +1106,9 @@ textarea{
   right: 40px;
   cursor: pointer;
 }
+.typeaheadContainer{
+  width: 350px;
+}
 .deleteImageMessage{
   height: 30px;
   width: 30px;
@@ -1132,4 +1159,287 @@ textarea{
   position: absolute;
   top: -150px;
   z-index: 5;
+}
+.typeahead-with-searches{
+  position: absolute;
+  top:10px
+}
+.search-option{
+  background-color: rgb(198, 192, 192);
+  cursor: pointer;
+}
+.search-option:hover{
+  background-color: #999faa;
+}
+.amountOfComments{
+  margin-top: 7px;
+}
+
+@media screen and (max-width: 600px) {
+  .events-friends-etc{
+    left: 0;
+    padding-top: 20px;
+    top: 56px;
+    height: 100vh;
+    width: 50px;
+  }
+  .event{
+    flex-wrap: wrap;
+  }
+  .custom-eventsBtn{
+    display: none;
+  }
+  .rightBar{
+    width: 60px;
+    align-items: center;
+  }
+  .contact-friend-name{
+    display: none;
+  }
+  .contacts{
+    font-size: 13px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .contacts-search{
+    height: 15px;
+    width: 15px;
+  }
+  .postForm{
+    height: 30px;
+  }
+  .postForm-text{
+    line-height: 5px;
+  }
+  .postForm-container{
+    padding-right: 6px;
+    width: 60%;
+    padding-bottom: 20px;
+    height: auto;
+  }
+  .allPosts{
+    width: 60%;
+  }
+  .postContainer-post-autorName{
+    font-size: 10px;
+  }
+  .profile-image{
+    width: 30px;
+    height: 30px;
+  }
+  .contact-friend-image{
+    height: 30px;
+  }
+  .contact-friend{
+    height: 50px;
+  }
+  .scroller{
+    margin: 25px 0px;
+  }
+  .profileInfo-container{
+    width: 90%;
+  }
+  .profile-container{
+    width: 84%;
+    height: 50vh;
+  }
+  .friendImage{
+    width: 100px;
+    height: 100px;
+  }
+  .friendSmallInfo{
+    font-size: 14px;
+    word-break: break-all;
+  }
+  .event-image{
+    width: 30px;
+  }
+  .likeBtn{
+    width: auto;
+  }
+  .postContainer{
+    padding: 0px;
+  }
+  .leftBar{
+    width: 70px;
+  }
+  .listOfFriendCards{
+    left: 70px;
+    width: 77%;
+    column-gap: 8px;
+  }
+  .friendCard{
+    width: 26%;
+    height: auto;
+  }
+  .friendCard-text{
+    font-size: 10px;
+    word-break: break-all;
+  }
+  .goBackButton{
+    width: 30px;
+    height: 30px;
+  }
+  .goBack{
+    display: none;
+  }
+  .friendRequestsText{
+    font-size: 12px;
+  }
+  .showYourRequests{
+    font-size: 8px;
+  }
+  .noFriendRequests{
+    font-size: 18px;
+    left: 40px;
+    position: relative;
+  }
+  .postContainer-post-text{
+  }
+  .likeImage{
+    width: 30px;
+    height: 25px;
+  }
+  .messageImage{
+    margin: 0;
+    margin-left: 5px;
+    margin-right: 3px;
+  }
+  .likeBtn{
+    margin-left: 1px;
+    margin-top: 0px;
+    height: 25px;
+  }
+  .amountOfComments{
+    margin-top: 0;
+  }
+  .commentBtn{
+    margin: 0;
+    font-size: 10px;
+    width: auto;
+    height: 25px;
+  }
+  .postContainer-post-footer{
+    padding-top: 5px;
+  }
+  .postContent{
+    margin-left: 5px;
+  }
+  .commentProfileImage{
+    width: 30px;
+    height: 30px;
+  }
+  .comment-name{
+    font-size: 10px;
+    word-break: break-all;
+  }
+  .submitCommentBtn{
+    margin-bottom: 10px;
+  }
+  .searchTypeahead{
+    width: 120px;
+    margin-left: 20px;
+  }
+  .search-option{
+    width: 230px;
+    font-size: 12px;
+    word-break: break-all;
+  }
+  .exampleModal{
+    left: 30px;
+    height: 60vh;
+    min-width: 100px;
+    max-width: 86vw;
+    width: 86vw;
+  }
+  .postImage{
+    width: 270px;
+    margin: 0px;
+  }
+  .profile-name{
+    word-break: break-all;
+    font-size: 12px;
+  }
+  .modal-body-autorData{
+    padding-right: 10px;
+  }
+  .modal-body{
+    max-height: 500px;
+  }
+  .modal-headerr{
+    padding-right: 20px;
+  }
+  .closeModal{
+    left: 88%;
+  }
+  .centerContent{
+    left: 28%;
+  }
+  .sentFriendRequest{
+    padding: 5px;
+    margin: 0;
+  }
+  .sentFriendRequest-image{
+    height: 30px;
+    width: 30px;
+  }
+  .sentFriendRequest-name{
+    margin-left: 3px;
+    font-size: 12px;
+    word-break: break-all;
+  }
+  .friendRequest-refuse{
+    font-size: 12px;
+    margin: 0;
+    padding: 0px;
+  }
+  .friendsReq{
+    margin: 0;
+  }
+  .listOfMyFriendRequests{
+    margin-right: 20px;
+  }
+  .requestAlreadySent{
+    font-size: 10px;
+  }
+  .profileBtn{
+    padding: 3px 3px;
+    height: 40px;
+    font-size: 12px;
+  }
+  .contactModal{
+    width: 80%;
+    left: 10%;
+  }
+  .typeaheadContainer{
+    width: 100%;
+  }
+  .searchContantEmail{
+    word-break: break-all;
+    font-size: 13.5px;
+  }
+  .listOfOpenedChats{
+    right: 10px;
+    column-gap:500px;
+  }
+  .sendLikeBtn{
+    margin-top: 5px;
+    width: 35px;
+    height: 35px;
+  }
+  .longTextSendBtn{
+    left: 89.5%;
+  }
+  .sendMessageBtn{
+    padding: 0;
+    height: 30px;
+    width: 30px;
+  }
+  .chat-header-name{
+    font-size: 12px;
+  }
+  .bigImageContainer{
+    left: 30px;
+    width: 80%;
+  }
 }

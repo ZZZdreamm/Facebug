@@ -22,8 +22,13 @@ import axios, { AxiosResponse } from "axios";
 import { urlAccounts, urlFriends, urlPosts } from "./apiPaths";
 import ModalOpenedContext from "./Utilities/ModalOpenedContext";
 import { friendRequest } from "./Friends/friends.models";
-import {ChatsOpenedContext, OpenedChatssContext } from "./Messages/ChatsOpenedContext";
+import {
+  ChatsOpenedContext,
+  OpenedChatssContext,
+} from "./Messages/ChatsOpenedContext";
 import OpenedChats from "./Messages/OpenedChats";
+import { CookiesProvider } from "react-cookie";
+import useCookies from "react-cookie/cjs/useCookies";
 
 configureInterceptor();
 
@@ -41,9 +46,11 @@ function App() {
 
   const [modalNotOpened, setModalNotOpened] = useState<boolean>(true);
 
-  const [amountOfChatsOpened,setAmountOfChatsOpened] = useState(0)
+  const [amountOfChatsOpened, setAmountOfChatsOpened] = useState(0);
 
-  const [openedChats, setOpenedChats] = useState([])
+  const [openedChats, setOpenedChats] = useState([]);
+
+  // const [cookies, setCookies] = useCookies(['recentSearches'])
 
   useEffect(() => {
     setClaims(getClaims());
@@ -68,7 +75,6 @@ function App() {
         setProfileFriends(response.data);
       });
 
-
       axios({
         method: "GET",
         url: `${urlFriends}/sentFriendRequests/${profileDTO.email}`,
@@ -91,51 +97,70 @@ function App() {
 
   return (
     <HashRouter>
-      <AuthenticationContext.Provider value={{ claims, update: setClaims }}>
-        <ProfileContext.Provider
-          value={{ profileDTO, updateProfile: setProfileDTO }}
-        >
-          <ProfileFriendsContext.Provider
-            value={{ profileFriends, updateFriends: setProfileFriends }}
+      <CookiesProvider>
+        <AuthenticationContext.Provider value={{ claims, update: setClaims }}>
+          <ProfileContext.Provider
+            value={{ profileDTO, updateProfile: setProfileDTO }}
           >
-            <ProfilePostsContext.Provider
-              value={{ profilePosts, updatePosts: setProfilePosts }}
+            <ProfileFriendsContext.Provider
+              value={{ profileFriends, updateFriends: setProfileFriends }}
             >
-              <ProfileFriendRequestsContext.Provider
-                value={{ profileFriendRequests, updateFriendRequests: setProfileFriendRequests }}
+              <ProfilePostsContext.Provider
+                value={{ profilePosts, updatePosts: setProfilePosts }}
               >
-                <ModalOpenedContext.Provider
+                <ProfileFriendRequestsContext.Provider
                   value={{
-                    modalNotOpened,
-                    updateModalState: setModalNotOpened,
+                    profileFriendRequests,
+                    updateFriendRequests: setProfileFriendRequests,
                   }}
                 >
-                  <ChatsOpenedContext.Provider value={{amountOfChatsOpened,updateAmountOfChatsOpened: setAmountOfChatsOpened}}>
-                    {/* @ts-ignore */}
-                    <OpenedChatssContext.Provider value={{openedChats:openedChats, updateChatsOpened:setOpenedChats}}>
-                  <div className={className}>
-                    <div className="wrapper">
-                      <Menu></Menu>
-                      <Routes>
-                        {routes.map((route) => (
-                          <Route
-                            key={route.path}
-                            path={route.path}
-                            element={<route.component />}
-                          />
-                        ))}
-                      </Routes>
-                      <OpenedChats openedChats={openedChats} updateChatsOpened={setOpenedChats} />
-                    </div>
-                  </div>
-                  </OpenedChatssContext.Provider>
-                  </ChatsOpenedContext.Provider>
-                </ModalOpenedContext.Provider>
-              </ProfileFriendRequestsContext.Provider>
-            </ProfilePostsContext.Provider>
-          </ProfileFriendsContext.Provider>
-        </ProfileContext.Provider>
-      </AuthenticationContext.Provider>
+                  <ModalOpenedContext.Provider
+                    value={{
+                      modalNotOpened,
+                      updateModalState: setModalNotOpened,
+                    }}
+                  >
+                    <ChatsOpenedContext.Provider
+                      value={{
+                        amountOfChatsOpened,
+                        updateAmountOfChatsOpened: setAmountOfChatsOpened,
+                      }}
+                    >
+                      {/* @ts-ignore */}
+                      <OpenedChatssContext.Provider
+                        value={{
+                          /* @ts-ignore */
+                          openedChats: openedChats,
+                          updateChatsOpened: setOpenedChats,
+                        }}
+                      >
+                        <div className={className}>
+                          <div className="wrapper">
+                            <Menu></Menu>
+                            <Routes>
+                              {routes.map((route) => (
+                                <Route
+                                  key={route.path}
+                                  path={route.path}
+                                  element={<route.component />}
+                                />
+                              ))}
+                            </Routes>
+                            <OpenedChats
+                              openedChats={openedChats}
+                              updateChatsOpened={setOpenedChats}
+                            />
+                          </div>
+                        </div>
+                      </OpenedChatssContext.Provider>
+                    </ChatsOpenedContext.Provider>
+                  </ModalOpenedContext.Provider>
+                </ProfileFriendRequestsContext.Provider>
+              </ProfilePostsContext.Provider>
+            </ProfileFriendsContext.Provider>
+          </ProfileContext.Provider>
+        </AuthenticationContext.Provider>
+      </CookiesProvider>
     </HashRouter>
   );
 }

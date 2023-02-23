@@ -1,7 +1,7 @@
 import axios, { Axios, AxiosResponse } from "axios";
 import { Form, Formik, FormikHelpers, FormikValues } from "formik";
 import { ReactElement, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { urlAccounts, urlFriends, urlPosts } from "../apiPaths";
 import { userCredentials } from "../auth/auth.models";
 import ImageContainer from "../Forms/ImageContainer";
@@ -50,6 +50,7 @@ export default function UserProfile() {
   });
 
   const { id } = useParams();
+  const navigate = useNavigate()
 
   let belowImageContentNumber = 1;
 
@@ -105,6 +106,7 @@ export default function UserProfile() {
       }
     }
     chooseContent(belowImageContentNumber);
+    console.log(profileDTO)
   }, [userProfile, profileFriends, profileFriendRequests]);
 
   function openProfile(email: string) {
@@ -156,15 +158,26 @@ export default function UserProfile() {
       method: "POST",
       url: `${urlAccounts}/profileImage`,
       data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { "Content-Type": "multipart/form-data"},
     });
 
     const profilesChanges = await axios.post<profileDTO>(
       `${urlAccounts}/loginProfile/${profileDTO.email}`
     );
+    console.log(profilesChanges.data)
     saveProfile(profilesChanges.data);
     updateProfile(getProfile());
+    navigate(0)
+    // setTimeout(() => {
+    //   console.log(getProfile())
+    //   console.log(profileDTO)
+    // }, 2000);
   }
+
+  // useEffect(()=>{
+  //   updateProfile(getProfile());
+  //   console.log(profileDTO)
+  // }, [profileDTO])
 
   function sendFriendRequest() {
     axios.post(

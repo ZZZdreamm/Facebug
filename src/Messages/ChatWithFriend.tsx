@@ -12,6 +12,7 @@ import UploadManyImages from "../Utilities/UploadManyImages";
 import MessagesContext from "./MessagesContext";
 import useIsInViewport from "../Utilities/IsInViewPort";
 import { number } from "yup/lib/locale";
+import { useNavigate } from "react-router-dom";
 
 
 export default function ChatWithFriend(props: chatWithFriendProps) {
@@ -45,6 +46,8 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     image: ``,
     onChange() {},
   });
+
+  const navigate = useNavigate()
 
   const [imagesToSend, setImagesToSend] = useState(false);
 
@@ -196,12 +199,16 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
       setImagesToSend(false);
     }
   }, [images]);
+
+  function goIntoProfile(profileEmail: string) {
+    navigate(`/profile/${profileEmail}`);
+  }
   return (
     <MessagesContext.Provider value={{messages: messages, updateMessages: setMessages}}>
       <div className="chat">
         <div className="chat-header">
           <div>
-            <img className="chat-header-image" src={image} />
+            <img className="chat-header-image" src={image} onClick={()=> {goIntoProfile(props.friendProfile.email)}}/>
             <span className="chat-header-name">
               {props.friendProfile.email}
             </span>

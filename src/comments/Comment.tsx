@@ -9,7 +9,7 @@ export default function Comment(props: commentsDTO) {
 
 
   useEffect(() => {
-    if (props.textContent.length > 180) {
+    if (props.textContent!.length > 180) {
       setTextOverflown(true);
       setPartOfTextContent(props.textContent.slice(0, 180));
     }

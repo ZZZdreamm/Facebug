@@ -4,6 +4,11 @@
   "homepage": "https://ZZZdreamm.github.io/Facebug",
   "private": true,
   "dependencies": {
+    "@algolia/autocomplete-js": "^1.8.1",
+    "@algolia/autocomplete-plugin-recent-searches": "^1.8.1",
+    "@capacitor/android": "^4.7.0",
+    "@capacitor/core": "^4.7.0",
+    "@capacitor/ios": "^4.7.0",
     "@emotion/css": "^11.10.5",
     "@emotion/react": "^11.10.5",
     "@testing-library/jest-dom": "^5.16.5",
@@ -13,12 +18,14 @@
     "@types/node": "^16.11.64",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
+    "algoliasearch": "^4.14.3",
     "axios": "^1.0.0",
     "bootstrap": "^5.2.2",
     "formik": "^2.2.9",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-bootstrap-typeahead": "^5.1.4",
+    "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
@@ -54,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "@capacitor/cli": "^4.7.0",
     "@types/react-bootstrap-typeahead": "^5.1.4",
     "gh-pages": "^5.0.0"
   }

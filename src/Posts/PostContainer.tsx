@@ -1,8 +1,9 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { Axios, AxiosResponse } from "axios";
 import { Form, Formik, FormikHelpers, FormikValues } from "formik";
 import { cp } from "fs";
 import { ReactElement, useContext, useEffect, useState } from "react";
-import { urlComments, urlPosts } from "../apiPaths";
+import { useNavigate } from "react-router-dom";
+import { ReadyImagesURL, urlComments, urlPosts } from "../apiPaths";
 import Comment from "../comments/Comment";
 import ProfileContext from "../Profile/ProfileContext";
 import Button from "../Utilities/Button";
@@ -37,6 +38,8 @@ export default function PostContainer(props: postDTO) {
 
   const debouncedAmountOfLikes = useDebounce(amountOfLikes, 2000);
   const [clicked, setClicked] = useState(false);
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (props.textContent.length > 180) {
@@ -91,8 +94,23 @@ export default function PostContainer(props: postDTO) {
     });
     setText("");
     setAmountOfComments(amountOfComments + 1);
+    var comms :commentsDTO[] = []
+    setTimeout(() => {
+      axios({
+        method: "GET",
+        url: `${urlComments}/getnewest/${props.id}`,
+      }).then((response: any) => {
+          console.log(response.data)
+          comms.push(response.data)
+          comms.push(...comments)
+          setComments(comms)
+          setPartOfComments(comms.slice(0, 3));
+      });
+    }, 2000);
   }
 
+
+  const [shownComments,setShownComments] =  useState(3)
   function showComments(id: number) {
     console.log(comments)
     if (comments.length == 0) {
@@ -104,7 +122,8 @@ export default function PostContainer(props: postDTO) {
           setCommentsOpened(true);
           if (coms.length > 3) {
             setTooMuchComments(true);
-            setPartOfComments(coms.slice(0, 3));
+            setPartOfComments(coms.slice(0, shownComments));
+            setShownComments(10)
           }
         });
     } else {
@@ -113,16 +132,27 @@ export default function PostContainer(props: postDTO) {
   }
 
   function showMoreComments() {
-    setTooMuchComments(false);
+    setShownComments(shownComments + 10)
+    if(shownComments >= comments.length){
+      setTooMuchComments(false)
+    }else{
+      setPartOfComments(comments.slice(0, shownComments))
+    }
+  }
+  function goIntoProfile(profileEmail: string) {
+    navigate(`/profile/${profileEmail}`);
+    navigate(0)
   }
   return (
     <>
       <div className="postContainer">
         <div className="postContainer-post-header">
+          <div style={{cursor:'pointer'}} onClick={()=> {goIntoProfile(props.autorName)}}>
           <UserImage profileImage={props.autorProfileImage} />
           <span className="postContainer-post-autorName">
             {props.autorName}
           </span>
+          </div>
         </div>
 
         <div className="postContainer-post-text">
@@ -153,7 +183,7 @@ export default function PostContainer(props: postDTO) {
           <span>
             <img
               className="likeImage"
-              src="https://localhost:7064/public/like.png"
+              src={`${ReadyImagesURL}/like.png`}
             />
             {amountOfLikes}
           </span>
@@ -191,15 +221,14 @@ export default function PostContainer(props: postDTO) {
           <span>
             <img
               className="messageImage"
-              src="https://localhost:7064/public/message.png"
-              style={{ marginRight: "20px" }}
+              src={`${ReadyImagesURL}/message.png`}
+
             />
 
           </span>
-          <span style={{ marginTop: "7px" }}>{amountOfComments}</span>
+          <span className="amountOfComments">{amountOfComments}</span>
           <button
             className="commentBtn"
-            style={{ marginLeft: "17px" }}
             onClick={() => {
               if (commentsOpened == false) {
                 showComments(props.id);

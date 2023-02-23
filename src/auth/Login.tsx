@@ -20,7 +20,7 @@ export default function Login(){
 
 
     const {claims} = useContext(AuthenticationContext);
-    
+
     async function login(credentials:userCredentials){
         try{
             setErrors([]);
@@ -32,6 +32,7 @@ export default function Login(){
             saveProfile(profileResponse.data);
             updateProfile(getProfile());
             navigate('/');
+            navigate(0)
         }
         catch(error){
             console.log(error)

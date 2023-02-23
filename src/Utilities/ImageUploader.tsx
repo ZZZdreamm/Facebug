@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ReadyImagesURL } from "../apiPaths";
 
 export default function ImageUploader(props: imageUploaderProps) {
   const [fileToData, setFileToData] = useState<File>();
@@ -19,7 +20,7 @@ export default function ImageUploader(props: imageUploaderProps) {
   useEffect(()=> {
     if(props.image === "undefined" || props.image === "null")
     {
-      setBaseImage("https://localhost:7064/public/noProfile.jpg")
+      setBaseImage(`${ReadyImagesURL}/noProfile.jpg`)
       return
     }
     setBaseImage(props.image)

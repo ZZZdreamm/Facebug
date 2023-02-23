@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ReadyImagesURL } from "../apiPaths";
 import ProfileContext, { ProfileFriendsContext } from "../Profile/ProfileContext";
 import { profileDTO } from "../Profile/profiles.models";
 import Button from "../Utilities/Button";
@@ -24,7 +25,7 @@ export default function UserFriends() {
             navigate(`/friends/${profileDTO.email}`);
           }}
         >
-          <img className="event-image" src="https://localhost:7064/public/friends.png" />
+          <img className="event-image" src={`${ReadyImagesURL}/friends.png`} />
           <Button className="custom-eventsBtn">Main Page</Button>
         </span>
         <span
@@ -33,7 +34,7 @@ export default function UserFriends() {
             navigate(`/friends/${profileDTO.email}/requests`);
           }}
         >
-          <img className="event-image" src="https://localhost:7064/public/friends.png" />
+          <img className="event-image" src={`${ReadyImagesURL}/friends.png`} />
           <Button className="custom-eventsBtn">Friends Requests</Button>
         </span>
       </div>

@@ -38,7 +38,12 @@ export default function Friend(props: friendsProps) {
     if (userProfile && profileDTO) {
       if (userProfile!.id == profileDTO.id) {
         setFriendIsNotUser(false);
+      }else{
+        setFriendIsNotUser(true);
       }
+    }
+    else{
+      setFriendIsNotUser(false);
     }
   }, [userProfile]);
 

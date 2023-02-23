@@ -24,7 +24,7 @@ export default function SentFriendRequest(props: friendRequest) {
           <img className="sentFriendRequest-image" src={profileImage}></img>
           <span className="sentFriendRequest-name">{props.friendName}</span>
         </div>
-        <div style={{marginLeft:"30px"}}>
+        <div className="friendsReq">
           <Button className="friendRequest-refuse" onClick={cancelSentRequest}>Cancel invitation</Button>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ReadyImagesURL } from "../apiPaths";
 import { profileDTO } from "../Profile/profiles.models";
 
 export default function FriendCard(props:profileDTO){
@@ -8,7 +9,7 @@ export default function FriendCard(props:profileDTO){
     useEffect(()=>{
         if(props.profileImage === "undefined" || props.profileImage === "null" || props.profileImage === undefined || props.profileImage === null)
         {
-          setImage("https://localhost:7064/public/noProfile.jpg")
+          setImage(`${ReadyImagesURL}/noProfile.jpg`)
           return
         }
         setImage(props.profileImage)

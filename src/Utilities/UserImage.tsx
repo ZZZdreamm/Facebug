@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { ReadyImagesURL } from "../apiPaths";
 
 export default function UserImage(props:userImageProps){
     const [image, setImage] = useState('')
     useEffect(()=>{
         if (props.profileImage == null){
-            setImage("https://localhost:7064/public/noProfile.jpg")
+            setImage(`${ReadyImagesURL}/noProfile.jpg`)
         }else{
             setImage(props.profileImage)
         }
@@ -20,5 +21,5 @@ interface userImageProps{
     profileImage?:string;
 }
 UserImage.defaultProps = {
-    profileImage:"https://localhost:7064/public/noProfile.jpg"
+    profileImage:`${ReadyImagesURL}/noProfile.jpg`
 }

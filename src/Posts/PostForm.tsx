@@ -2,6 +2,7 @@ import axios from "axios";
 import { Form, Formik } from "formik";
 import { text } from "node:stream/consumers";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { urlPosts } from "../apiPaths";
 import ImageContainer from "../Forms/ImageContainer";
 import ImageField from "../Forms/ImageField";
@@ -15,10 +16,7 @@ import UserImage from "../Utilities/UserImage";
 import PostModal from "./PostModal";
 
 export default function PostForm(props: postFormProps) {
-  const [disabled, setDisabled] = useState(true);
-  const [emptyText, setEmptyText] = useState(true);
-  // const [text, setText] = useState<string>("");
-  const { profileDTO, updateProfile } = useContext(ProfileContext);
+  const { profileDTO } = useContext(ProfileContext);
   const [displayModal, setDisplayModal] = useState(0);
 
   const { fileToData, baseImage, ImageUpload } = ImageUploader({
@@ -27,18 +25,7 @@ export default function PostForm(props: postFormProps) {
     onChange() {},
   });
 
-  // useEffect(() => {
-  //   if (text !== "") {
-  //     setEmptyText(false);
-  //   } else {
-  //     setEmptyText(true);
-  //   }
-  //   if (emptyText === false) {
-  //     setDisabled(false);
-  //   } else {
-  //     setDisabled(true);
-  //   }
-  // }, []);
+  const navigate = useNavigate()
 
   async function submitPost(post: postCreationDTO) {
     try {
@@ -50,10 +37,14 @@ export default function PostForm(props: postFormProps) {
         headers: { "Content-Type": "multipart/form-data" },
       });
     } catch (error) {}
+    navigate(0)
   }
   var textDiv = document.getElementById("post-text")
   const [textEmpty,setTextEmpty] = useState(true)
 
+  function goIntoProfile(profileEmail: string) {
+    navigate(`/profile/${profileEmail}`);
+  }
 
   return (
     <>
@@ -62,7 +53,6 @@ export default function PostForm(props: postFormProps) {
           <Formik
             initialValues={props.model}
             onSubmit={(values) => {
-
               const text = textDiv?.textContent
               values.textContent = text!;
               values.mediaFile = fileToData;
@@ -91,7 +81,7 @@ export default function PostForm(props: postFormProps) {
               <div className="modal-myfooter">
                 <span className="fileUploader"> {ImageUpload}</span>
                 <Button
-                  className="btn btn-primary publish-button"
+                  className="publish-button"
                   type="submit"
                   disabled={textEmpty}
                   onClick={() => {
@@ -119,7 +109,9 @@ export default function PostForm(props: postFormProps) {
         }
         modalDisplayer={
           <div className="postForm-container">
+             <div style={{cursor:'pointer', width:'55px', height:'55px'}} onClick={()=> {goIntoProfile(profileDTO.email)}}>
             <UserImage profileImage={profileDTO.profileImage} />
+            </div>
             <div
               className="postForm"
               onClick={() => {

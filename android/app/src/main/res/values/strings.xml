@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Facebug</string>
+    <string name="title_activity_main">Facebug</string>
+    <string name="package_name">zzzdreamm.github.io</string>
+    <string name="custom_url_scheme">zzzdreamm.github.io</string>
+</resources>

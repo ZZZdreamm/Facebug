@@ -1,4 +1,5 @@
 import { Dispatch, JSXElementConstructor, ReactElement, SetStateAction, useContext, useEffect, useState } from "react";
+import { ReadyImagesURL } from "../apiPaths";
 import ChatWithFriend from "../Messages/ChatWithFriend";
 import ProfileContext from "../Profile/ProfileContext";
 import { profileDTO } from "../Profile/profiles.models";
@@ -11,7 +12,7 @@ export default function Contact(props:contactProps){
     useEffect(()=>{
         if(props.profile.profileImage === "undefined" || props.profile.profileImage === "null" || props.profile.profileImage === undefined || props.profile.profileImage === null)
         {
-          setImage("https://localhost:7064/public/noProfile.jpg")
+          setImage(`${ReadyImagesURL}/noProfile.jpg`)
           return
         }
         setImage(props.profile.profileImage)

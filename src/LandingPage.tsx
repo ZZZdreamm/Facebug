@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { ReactElement, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { urlPosts } from "./apiPaths";
+import { ReadyImagesURL, urlPosts } from "./apiPaths";
 import Authorized from "./auth/Authorized";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
@@ -52,7 +52,7 @@ export default function LandingPage() {
       .then((response: AxiosResponse<postDTO[]>) => {
         setPosts(response.data);
       });
-    console.log("polak");
+    // console.log("polak");
   }
 
   const [displayCount, setDisplayCount] = useState(0)
@@ -100,7 +100,7 @@ export default function LandingPage() {
                   navigate(`/friends/${profileDTO.email}`);
                 }}
               >
-                <img className="event-image" src="https://localhost:7064/public/friends.png" />
+                <img className="event-image" src={`${ReadyImagesURL}/friends.png`} />
                 <Button className="custom-eventsBtn">Friends</Button>
               </span>
             </div>
@@ -108,7 +108,7 @@ export default function LandingPage() {
             <div className="rightBar">
               <span className="contacts">
                 Contacts
-                <img className="contacts-search" src="https://localhost:7064/public/search.png" onClick={()=> {
+                <img className="contacts-search" src={`${ReadyImagesURL}/search.png`} onClick={()=> {
                   openDeleteModal()
                 }}/>
                 <ContactModal doDisplay={displayCount} setDisplay={setDisplayCount} closeModal={closeModal}/>

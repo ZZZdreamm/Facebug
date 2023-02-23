@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ReactElement, useContext, useState } from "react";
-import { urlMessages } from "../apiPaths";
+import { ReadyImagesURL, urlMessages } from "../apiPaths";
 import DeleteMessageModal from "./DeleteMessageModal";
 import { messageDTO } from "./messages.models";
 import MessagesContext from "./MessagesContext";
@@ -15,9 +15,11 @@ export default function Message(props: messageProps) {
 
   const [showImage, setShowImage] = useState(false);
   const [bigImage, setBigImage] = useState<ReactElement>();
-  const {messages, updateMessages} = useContext(MessagesContext)
+  const { messages, updateMessages } = useContext(MessagesContext);
 
-  const [deleteModal, setDeleteModal] = useState<any>()
+  const [deleteModal, setDeleteModal] = useState<any>();
+
+  const [displayDelete, setDisplayDelete] = useState("none");
 
   function showImageAsGreater(image: string) {
     var img = (
@@ -28,7 +30,7 @@ export default function Message(props: messageProps) {
           onClick={() => console.log("SDSD")}
         />
         <img
-          src="https://localhost:7064/public/red X.png"
+          src={`${ReadyImagesURL}/red X.png`}
           className="closeBigImage"
           style={{ marginLeft: "5px", cursor: "pointer" }}
           onClick={() => setShowImage(false)}
@@ -38,60 +40,81 @@ export default function Message(props: messageProps) {
     setBigImage(img);
     setShowImage(true);
   }
-  function deleteMessage(messageId:number){
-    axios.delete(`${urlMessages}/delete/${messageId}`)
-    var messes : any = []
-    messages.forEach(mess => {
-      if(mess.id != messageId){
-        messes.push(mess)
+  function deleteMessage(messageId: number) {
+    axios.delete(`${urlMessages}/delete/${messageId}`);
+    var messes: any = [];
+    messages.forEach((mess) => {
+      if (mess.id != messageId) {
+        messes.push(mess);
       }
     });
     // console.log(messes)
-    updateMessages(messes)
+    updateMessages(messes);
   }
-  let displayCount = 1
-  const openDeleteModal = (messageId:number) => {
-    displayCount = 1
-    setDeleteModal(<DeleteMessageModal id={messageId} doDisplay={displayCount} deleteMessage={deleteMessage}  closeModal={closeModal}/>)
-    displayCount = 0
-  }
+  let displayCount = 1;
+  const openDeleteModal = (messageId: number) => {
+    displayCount = 1;
+    setDeleteModal(
+      <DeleteMessageModal
+        id={messageId}
+        doDisplay={displayCount}
+        deleteMessage={deleteMessage}
+        closeModal={closeModal}
+      />
+    );
+    displayCount = 0;
+  };
   const closeModal = () => {
-    setDeleteModal(null)
-  }
+    setDeleteModal(null);
+  };
 
   var overlay = showImage ? "overlayDisplayed" : "overlay";
   return (
     <>
       {deleteModal}
       {showImage ? <div id={overlay}></div> : null}
-        <div className={`${fromFriend}`}>
-          {props.fromMeMessage == false ? (
-            <img className="chat-header-image" src={props.friendProfileImage} />
-          ) : null}
-          {isText ? (
-            <div
-              className={messageStyle}
-              style={{ backgroundColor: `${messageColor}` }}
-            >
-              <img src="https://localhost:7064/public/deleteBin.png" className="deleteMessage" onClick={() => {
-                openDeleteModal(props.id)
-              }}/>
-              <span className="message-text">{props.message.textContent}</span>
-            </div>
-          ) : (
-            <div className={messageStyle}>
-              <img src="https://localhost:7064/public/deleteBin.png" className="deleteMessage" onClick={() => {
-                openDeleteModal(props.id)
-              }}/>
-              <img
-                className="message-image"
-                src={props.message.imageContent}
-                onClick={() => showImageAsGreater(props.message.imageContent!)}
-              />
-            </div>
-          )}
-          {showImage ? bigImage : null}
-        </div>
+      <div
+        className={`${fromFriend}`}
+        onMouseEnter={() => setDisplayDelete("inline")}
+        onMouseLeave={() => setDisplayDelete("none")}
+      >
+        {props.fromMeMessage == false ? (
+          <img className="chat-header-image" src={props.friendProfileImage} />
+        ) : null}
+        {isText ? (
+          <div
+            className={messageStyle}
+            style={{ backgroundColor: `${messageColor}` }}
+          >
+            <img
+              style={{ display: displayDelete }}
+              src={`${ReadyImagesURL}/deleteBin.png`}
+              className="deleteMessage"
+              onClick={() => {
+                openDeleteModal(props.id);
+              }}
+            />
+            <span className="message-text">{props.message.textContent}</span>
+          </div>
+        ) : (
+          <div className={messageStyle}>
+            <img
+              style={{ display: displayDelete }}
+              src={`${ReadyImagesURL}/deleteBin.png`}
+              className="deleteMessage"
+              onClick={() => {
+                openDeleteModal(props.id);
+              }}
+            />
+            <img
+              className="message-image"
+              src={props.message.imageContent}
+              onClick={() => showImageAsGreater(props.message.imageContent!)}
+            />
+          </div>
+        )}
+        {showImage ? bigImage : null}
+      </div>
     </>
   );
 }

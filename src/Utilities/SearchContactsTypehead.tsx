@@ -50,12 +50,12 @@ export default function SearchContactsTypeahead(props: searchTypeaheadProps) {
   // THAT IS SHITTY ROZWIAZANIE
   // function goIntoProfile(profileEmail: string) {
   //   navigate(`/profile/${profileEmail}`);
-  //   navigate(0)
+  //
   // }
 
   return (
     <>
-      <div style={{width:'350px'}}>
+      <div className='typeaheadContainer'>
         <AsyncTypeahead
           id="typeahead"
           onChange={(profiles: profileDTO[]) => {
@@ -100,7 +100,7 @@ export default function SearchContactsTypeahead(props: searchTypeaheadProps) {
               }}
               >
                 <UserImage profileImage={profile.profileImage} />
-                <span>{profile.email}</span>
+                <span className='searchContantEmail'>{profile.email}</span>
               </div>
             </>
           )}

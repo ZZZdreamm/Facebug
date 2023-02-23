@@ -43,7 +43,7 @@ export default function UserFriendsRequests() {
       <div className="leftBar">
         <GoBackButton />
         <div className="yourRequests">
-          <span>Friend Requests</span>
+          <span className="friendRequestsText">Friend Requests</span>
           <Modal
             modalDisplayer={
               <span

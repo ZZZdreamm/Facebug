@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { urlAccounts } from "./apiPaths";
+import { ReadyImagesURL, urlAccounts } from "./apiPaths";
 import { userCredentials } from "./auth/auth.models";
 import AuthenticationContext from "./auth/AuthenticationContext";
 import Authorized from "./auth/Authorized";
@@ -14,8 +14,12 @@ import UserImage from "./Utilities/UserImage";
 
 export default function Menu() {
   const { update, claims } = useContext(AuthenticationContext);
-  const { profileDTO } = useContext(ProfileContext);
+  const { profileDTO, updateProfile } = useContext(ProfileContext);
   const navigate = useNavigate()
+
+  useEffect(()=>{
+    updateProfile(profileDTO)
+  },[profileDTO])
 
   return (
     <>
@@ -24,7 +28,7 @@ export default function Menu() {
       {/* <div className="container-fluid"> */}
         <NavLink className="navbar-brand" to="/">
           <span style={{ display: "flex" }}>
-            <img className="App-logo" src="https://localhost:7064/public/logo.jpg" alt="SocStor"/>
+            <img className="App-logo" src={`${ReadyImagesURL}/logo.jpg`} alt="Facebug"/>
           </span>
         </NavLink>
         <Authorized
