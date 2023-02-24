@@ -1257,11 +1257,18 @@ textarea{
   .likeBtn{
     width: auto;
   }
+  .manyImagesUploader{
+    bottom: 15px;
+  }
   .postContainer{
     padding: 0px;
   }
   .leftBar{
     width: 70px;
+  }
+  .chat-header-image{
+    width: 30px;
+    height: 30px;
   }
   .listOfFriendCards{
     left: 70px;
@@ -1410,6 +1417,7 @@ textarea{
     max-width: 70%;
     width: 70%;
     margin-right: 20%;
+    bottom: 5px;
   }
   .image-message-to-send{
     left: 50px;
@@ -1452,10 +1460,12 @@ textarea{
     right: 10px;
     column-gap:500px;
   }
+  .chat{
+    width: 260px;
+  }
   .sendLikeBtn{
-    margin-top: 5px;
-    width: 35px;
-    height: 35px;
+    width: 45px;
+    height: 40px;
   }
   .longTextSendBtn{
     left: 85.5%;
@@ -1464,6 +1474,7 @@ textarea{
     padding: 0;
     height: 30px;
     width: 30px;
+    right: 5px;
   }
   .chat-header-name{
     font-size: 12px;

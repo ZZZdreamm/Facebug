@@ -50,7 +50,7 @@ export default function UserProfile() {
   });
 
   const { id } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   let belowImageContentNumber = 1;
 
@@ -106,7 +106,7 @@ export default function UserProfile() {
       }
     }
     chooseContent(belowImageContentNumber);
-    console.log(profileDTO)
+    console.log(profileDTO);
   }, [userProfile, profileFriends, profileFriendRequests]);
 
   function openProfile(email: string) {
@@ -134,7 +134,7 @@ export default function UserProfile() {
   }
   function chooseContent(id: number) {
     if (belowImageContentNumber === 1) {
-      setBelowImageContent(<PostsList posts={posts}/>);
+      setBelowImageContent(<PostsList posts={posts} />);
       return;
     }
     if (belowImageContentNumber === 2) {
@@ -158,16 +158,18 @@ export default function UserProfile() {
       method: "POST",
       url: `${urlAccounts}/profileImage`,
       data: formData,
-      headers: { "Content-Type": "multipart/form-data"},
+      headers: { "Content-Type": "multipart/form-data" },
     });
 
     const profilesChanges = await axios.post<profileDTO>(
       `${urlAccounts}/loginProfile/${profileDTO.email}`
     );
-    console.log(profilesChanges.data)
+    console.log(profilesChanges.data);
     saveProfile(profilesChanges.data);
     updateProfile(getProfile());
-    navigate(0)
+    setTimeout(() => {
+      navigate(0);
+    }, 300);
     // setTimeout(() => {
     //   console.log(getProfile())
     //   console.log(profileDTO)
@@ -183,14 +185,14 @@ export default function UserProfile() {
     axios.post(
       `${urlFriends}/sendFriendRequest/${profileDTO.id}/${userProfile?.id}`
     );
-    setNotInMySentFriendRequests(false)
+    setNotInMySentFriendRequests(false);
   }
 
   function cancelSentRequest() {
     axios.delete(
       `${urlFriends}/cancelSentRequest/${profileDTO.id}/${userProfile?.id}`
     );
-    setNotInMySentFriendRequests(true)
+    setNotInMySentFriendRequests(true);
   }
 
   const [loading, setLoading] = useState(true);

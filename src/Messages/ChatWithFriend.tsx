@@ -14,11 +14,10 @@ import useIsInViewport from "../Utilities/IsInViewPort";
 import { number } from "yup/lib/locale";
 import { useNavigate } from "react-router-dom";
 
-
 export default function ChatWithFriend(props: chatWithFriendProps) {
   const [image, setImage] = useState<string>();
   // const [messages, setMessages] = useState<any>([]);
-  const [messages, setMessages] = useState<any>([])
+  const [messages, setMessages] = useState<any>([]);
 
   const [sendingMessage, setSendingMessage] = useState(false);
   const refScroll1 = useRef<any>(null);
@@ -29,7 +28,7 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
   const [textToSend, setTextToSend] = useState("");
   const [textingDivState, setTextingDivState] = useState<string>();
 
-  const [ifLongTextStyle, setIfLongTextStyle] = useState('')
+  const [ifLongTextStyle, setIfLongTextStyle] = useState("");
   // const [tooMuchCharacters, setTooMuchCharacters] = useState('')
 
   const {
@@ -40,28 +39,27 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     deleteImage,
     images,
     setImages,
-    setFileToData
+    setFileToData,
   } = UploadManyImages({
     textContent: "Send Image",
     image: ``,
     onChange() {},
   });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [imagesToSend, setImagesToSend] = useState(false);
 
-  useEffect(()=>{
-    if (textToSend != ''){
-      setIfLongTextStyle('longTextSendBtn')
-    }
-    else{
-      setIfLongTextStyle('')
+  useEffect(() => {
+    if (textToSend != "") {
+      setIfLongTextStyle("longTextSendBtn");
+    } else {
+      setIfLongTextStyle("");
     }
     // if (textToSend.length >= 250){
     //   setTooMuchCharacters('Maximum message length is 250 characters!')
     // }
-  },[textToSend])
+  }, [textToSend]);
 
   useEffect(() => {
     if (
@@ -79,7 +77,6 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     getMessages();
   }, []);
 
-
   useEffect(() => {
     if (refScroll1.current == null) {
       return;
@@ -87,15 +84,13 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     refScroll1.current.scrollIntoView();
   }, [refScroll1, chatOpenedAlready]);
 
-
-  var scrolledChatUp = useIsInViewport(refScroll2, '1000px');
+  var scrolledChatUp = useIsInViewport(refScroll2, "1000px");
   useEffect(() => {
-      if (scrolledChatUp) {
-        setNumberOfMessagesStacks(numberOfMessagesStacks + 1);
-        getMessages();
-      }
+    if (scrolledChatUp) {
+      setNumberOfMessagesStacks(numberOfMessagesStacks + 1);
+      getMessages();
+    }
   }, [scrolledChatUp]);
-
 
   async function getMessages() {
     await axios
@@ -116,20 +111,19 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     const text = textDiv?.textContent;
     formData.append("SenderId", props.userProfile.id);
     formData.append("ReceiverId", props.friendProfile.id);
-    var messagesToGetCount = 1
+    var messagesToGetCount = 1;
     if (image) {
       for (var i = 0; i != image.length; i++) {
         formData.append("ImageContent", image[i]);
       }
-      messagesToGetCount = (image.length >= 1 ? image.length : 1)
+      messagesToGetCount = image.length >= 1 ? image.length : 1;
     }
-    if (text){
+    if (text) {
       formData.append("TextContent", text!);
     }
     formData.append("Date", date);
 
-
-    axios.post(`${urlMessages}/send`, formData)
+    axios.post(`${urlMessages}/send`, formData);
 
     setTimeout(() => {
       setSendingMessage(false);
@@ -138,15 +132,15 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
           `${urlMessages}/getnewest/${props.userProfile.id}/${props.friendProfile.id}/${messagesToGetCount}`
         )
         .then((response) => {
-          var messes = [...messages]
+          var messes = [...messages];
           response.data.forEach((message: any) => {
-            console.log(message)
-            messes.push(message)
+            console.log(message);
+            messes.push(message);
           });
           setMessages(messes);
-          setTextToSend('')
-          setImages([])
-          setFileToData([])
+          setTextToSend("");
+          setImages([]);
+          setFileToData([]);
           textDiv!.innerHTML = "";
           setTimeout(() => {
             refScroll1.current.scrollIntoView();
@@ -155,14 +149,11 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
     }, 5000);
   }
 
-
   async function handleScroll() {
     var element = document.getElementById(
       "modal-body-" + `${props.friendProfile.id}`
     );
-    if (
-      element!.scrollTop < element!.clientHeight
-    ) {
+    if (element!.scrollTop < element!.clientHeight) {
       setNumberOfMessagesStacks(numberOfMessagesStacks + 1);
       getMessages();
     }
@@ -203,12 +194,55 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
   function goIntoProfile(profileEmail: string) {
     navigate(`/profile/${profileEmail}`);
   }
+
+  let isKeyboardOpen = false;
+  const openKeyboard = () => {
+      const MIN_KEYBOARD_HEIGHT = 300;
+
+      const isMobile = window.innerWidth < 768;
+      isKeyboardOpen =
+        isMobile &&
+        window.screen.height - MIN_KEYBOARD_HEIGHT >
+          window.visualViewport!.height;
+      console.log("sdsd");
+      if (isKeyboardOpen) {
+        setStyles({
+          top: "-10px",
+        });
+        setImageStyles({
+          width: "20px",
+          height: "20px",
+        });
+      } else {
+        setStyles({
+          top: "5px",
+        });
+        setImageStyles({
+          width: "40px",
+          height: "40px",
+        });
+      }
+  };
+
+  window.addEventListener("resize", openKeyboard);
+
+  const [styles, setStyles] = useState({});
+  const [imageStyles, setImageStyles] = useState({});
   return (
-    <MessagesContext.Provider value={{messages: messages, updateMessages: setMessages}}>
+    <MessagesContext.Provider
+      value={{ messages: messages, updateMessages: setMessages }}
+    >
       <div className="chat">
         <div className="chat-header">
           <div>
-            <img className="chat-header-image" src={image} onClick={()=> {goIntoProfile(props.friendProfile.email)}}/>
+            <img
+              className="chat-header-image"
+              style={imageStyles}
+              src={image}
+              onClick={() => {
+                goIntoProfile(props.friendProfile.email);
+              }}
+            />
             <span className="chat-header-name">
               {props.friendProfile.email}
             </span>
@@ -241,19 +275,37 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
           />
         </div>
         <div className="chat-footer">
-          {/* <span className="tooMuchWordsAlert">{tooMuchCharacters}</span> */}
           {textToSend == "" ? (
             <div className="uploader">{ImageUpload}</div>
           ) : null}
           <div className={textingDivState}>
             <div
               id={"message " + `${props.friendProfile.id}`}
-              className='message-to-send'
+              className="message-to-send"
               contentEditable
               onInput={(e) => {
                 // @ts-ignore
                 setTextToSend(e.target.textContent);
               }}
+              // onClick={()=>{
+              //   // setStyles({
+              //   //   top: "-20px"
+              //   // })
+              //   // setImageStyles({
+              //   //   width: "20px",
+              //   //   height: "20px"
+              //   // })
+              //   if(isKeyboardOpen){
+              //     setStyles({
+              //       top: "-20px"
+              //     })
+              //     setImageStyles({
+              //       width: "20px",
+              //       height: "20px"
+              //     })
+              //   }
+
+              // }}
             ></div>
             <div
               id={`image-to-send ${props.friendProfile.id}`}
@@ -288,16 +340,20 @@ export default function ChatWithFriend(props: chatWithFriendProps) {
               disabled={sendingMessage}
               type="submit"
               className={`${ifLongTextStyle} sendMessageBtn`}
+              style={styles}
               onClick={() => {
                 sendMessage(fileToData);
               }}
             >
-              <img className="chat-footer-sendMessage" src={`${ReadyImagesURL}/sendBtn.png `}/>
+              <img
+                className="chat-footer-sendMessage"
+                src={`${ReadyImagesURL}/sendBtn.png `}
+              />
             </button>
           )}
         </div>
       </div>
-      </MessagesContext.Provider>
+    </MessagesContext.Provider>
   );
 }
 
@@ -308,5 +364,3 @@ interface chatWithFriendProps {
   openChats: any;
   setChatOpened: any;
 }
-
-

@@ -48,7 +48,6 @@ export default function Message(props: messageProps) {
         messes.push(mess);
       }
     });
-    // console.log(messes)
     updateMessages(messes);
   }
   let displayCount = 1;
@@ -76,9 +75,7 @@ export default function Message(props: messageProps) {
       if(isHolding){
         openDeleteModal(props.id);
       }
-      else{
-        // setDisplayDelete("none")
-      }
+
     }, duration);
   }
 
@@ -89,10 +86,11 @@ export default function Message(props: messageProps) {
       {showImage ? <div id={overlay}></div> : null}
       <div
         className={`${fromFriend}`}
-        // onMouseEnter={() => setDisplayDelete("inline")}
-        // onMouseLeave={() => setDisplayDelete("none")}
         onMouseDown={()=> {holdEvent()}}
         onMouseUp={()=> {
+          isHolding = false
+        }}
+        onMouseLeave={()=> {
           isHolding = false
         }}
       >
@@ -104,26 +102,11 @@ export default function Message(props: messageProps) {
             className={messageStyle}
             style={{ backgroundColor: `${messageColor}` }}
           >
-            {/* <img
-              style={{ display: displayDelete }}
-              src={`${ReadyImagesURL}/deleteBin.png`}
-              className="deleteMessage"
-              onClick={() => {
-                openDeleteModal(props.id);
-              }}
-            /> */}
+
             <span className="message-text">{props.message.textContent}</span>
           </div>
         ) : (
           <div className={messageStyle}>
-            {/* <img
-              style={{ display: displayDelete }}
-              src={`${ReadyImagesURL}/deleteBin.png`}
-              className="deleteMessage"
-              onClick={() => {
-                openDeleteModal(props.id);
-              }}
-            /> */}
             <img
               className="message-image"
               src={props.message.imageContent}

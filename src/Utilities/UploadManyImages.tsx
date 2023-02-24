@@ -112,7 +112,7 @@ export default function UploadManyImages(props: imageUploaderProps) {
     ),
     ImageUpload: (
 
-        <label className="fileUploader-container">
+        <label className="fileUploader-container manyImagesUploader">
           <input
             style={{ display: "none" }}
             type="file"
