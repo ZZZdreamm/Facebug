@@ -31,7 +31,7 @@ export default function DeleteMessageModal(props: deleteMessageModalProps) {
           className="deleteMessageModal"
           style={{ display: `${visibleModal}`, pointerEvents: "auto" }}
         >
-          <span style={{marginLeft:'40px'}}>Do you really wanna delete message?</span>
+          <span className="deleteMessageText" style={{marginLeft:'40px'}}>Do you really wanna delete message?</span>
           <div style={{marginTop:'20px'}} >
           <button
             className="messageBtn btn btn-danger"

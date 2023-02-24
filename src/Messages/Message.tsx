@@ -68,6 +68,20 @@ export default function Message(props: messageProps) {
     setDeleteModal(null);
   };
 
+  let isHolding = false
+  const holdEvent = () => {
+    isHolding = true
+    const duration = 1000
+    setTimeout(() => {
+      if(isHolding){
+        openDeleteModal(props.id);
+      }
+      else{
+        // setDisplayDelete("none")
+      }
+    }, duration);
+  }
+
   var overlay = showImage ? "overlayDisplayed" : "overlay";
   return (
     <>
@@ -75,8 +89,12 @@ export default function Message(props: messageProps) {
       {showImage ? <div id={overlay}></div> : null}
       <div
         className={`${fromFriend}`}
-        onMouseEnter={() => setDisplayDelete("inline")}
-        onMouseLeave={() => setDisplayDelete("none")}
+        // onMouseEnter={() => setDisplayDelete("inline")}
+        // onMouseLeave={() => setDisplayDelete("none")}
+        onMouseDown={()=> {holdEvent()}}
+        onMouseUp={()=> {
+          isHolding = false
+        }}
       >
         {props.fromMeMessage == false ? (
           <img className="chat-header-image" src={props.friendProfileImage} />
@@ -86,26 +104,26 @@ export default function Message(props: messageProps) {
             className={messageStyle}
             style={{ backgroundColor: `${messageColor}` }}
           >
-            <img
+            {/* <img
               style={{ display: displayDelete }}
               src={`${ReadyImagesURL}/deleteBin.png`}
               className="deleteMessage"
               onClick={() => {
                 openDeleteModal(props.id);
               }}
-            />
+            /> */}
             <span className="message-text">{props.message.textContent}</span>
           </div>
         ) : (
           <div className={messageStyle}>
-            <img
+            {/* <img
               style={{ display: displayDelete }}
               src={`${ReadyImagesURL}/deleteBin.png`}
               className="deleteMessage"
               onClick={() => {
                 openDeleteModal(props.id);
               }}
-            />
+            /> */}
             <img
               className="message-image"
               src={props.message.imageContent}

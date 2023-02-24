@@ -1378,6 +1378,7 @@ textarea{
   .sentFriendRequest{
     padding: 5px;
     margin: 0;
+    margin-bottom: 10px;
   }
   .sentFriendRequest-image{
     height: 30px;
@@ -1395,6 +1396,35 @@ textarea{
   }
   .friendsReq{
     margin: 0;
+  }
+  .deleteMessageModal{
+    left: 10px;
+    width: 300px;
+  }
+  .deleteMessageText{
+    font-size: 14px;
+    margin: 0;
+  }
+  .chat-footer-text{
+    min-width: 10%;
+    max-width: 70%;
+    width: 70%;
+    margin-right: 20%;
+  }
+  .image-message-to-send{
+    left: 50px;
+  }
+  .message-to-send{
+    min-width: 90%;
+    max-width: 100%;
+  }
+  .long-message-text{
+    width: 80%;
+    bottom: 5px;
+  }
+  .messageBtn{
+    width: 30%;
+    margin-left: 30px;
   }
   .listOfMyFriendRequests{
     margin-right: 20px;
@@ -1428,7 +1458,7 @@ textarea{
     height: 35px;
   }
   .longTextSendBtn{
-    left: 89.5%;
+    left: 85.5%;
   }
   .sendMessageBtn{
     padding: 0;
